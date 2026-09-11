@@ -42,7 +42,7 @@ A lab will be marked **complete** only when it includes the topology, addressing
 3. Inspect Layer 1, Layer 2, Layer 3, routing, and policy in order.
 4. Record the command output that exposes the fault.
 5. Make one controlled change.
-6. repeat the original test and capture proof of recovery.
+6. Repeat the original test and capture proof of recovery.
 
 ## Tools
 
