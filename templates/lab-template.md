@@ -1,18 +1,28 @@
 # Lab Title
 
+**Status:** In progress  
+**Platform:** Cisco Packet Tracer  
+**Skills:** Add three to six searchable skills
+
+## Scenario
+
+Describe the organization, user need, or support ticket this lab models. Explain why the network change matters.
+
 ## Objective
 
-Describe what the lab is intended to configure, verify, or troubleshoot.
+State the measurable result of the lab.
 
 ## Topology
 
-Add a Packet Tracer screenshot or topology diagram here.
+![Topology](images/topology.png)
 
-## Addressing Table
+Describe device roles and important links. Do not mark the lab complete until the image is real.
 
-| Device | Interface | IP Address | Subnet Mask / Prefix | Default Gateway |
-|---|---|---|---|---|
-| R1 | G0/0 | | | |
+## Addressing and VLAN Plan
+
+| Device | Interface | IPv4/IPv6 address | VLAN | Default gateway | Purpose |
+|---|---|---|---:|---|---|
+| R1 | G0/0 | | | | |
 
 ## Requirements
 
@@ -20,46 +30,75 @@ Add a Packet Tracer screenshot or topology diagram here.
 - Requirement 2
 - Requirement 3
 
-## Configuration
+## Files
 
-### Device: R1
+- [Packet Tracer lab](packet-tracer/lab-name.pkt)
+- [Device configurations](configs/)
+
+Add these links only after the files exist.
+
+## Implementation
+
+Explain the design decisions briefly, then include the important configuration—not unexplained configuration dumps.
+
+### R1
 
 ```text
 enable
 configure terminal
 !
-! Add configuration here
+! Relevant configuration
 !
 end
 write memory
 ```
 
-## Verification
+## Verification Plan
+
+| Test | Expected result | Evidence |
+|---|---|---|
+| Source host to gateway | Successful ping | Command output or screenshot |
+| Required remote traffic | Permitted | Output |
+| Prohibited traffic | Blocked | ACL counter or test |
+| Control-plane state | Correct neighbor/port/route state | Show command |
+
+## Verification Output
+
+Record selected real output from the completed lab.
 
 ```text
 show ip interface brief
 show ip route
 ```
 
-Record the expected and actual results.
+## Troubleshooting Case
 
-## Problem Encountered
+### Symptom
 
-Describe any failure, unexpected output, or connectivity problem.
+Describe exactly what failed.
 
-## Troubleshooting Process
+### Expected State
 
-1. Verify physical/interface state.
-2. Verify addressing and subnet masks.
-3. Verify Layer 2 configuration.
-4. Verify routing configuration.
-5. Verify security policies such as ACLs.
-6. Use targeted show/debug commands.
+Describe what should have happened.
 
-## Resolution
+### Evidence and Reasoning
 
-Explain what caused the problem and exactly what fixed it.
+| Step | Command/test | Observation | Conclusion |
+|---:|---|---|---|
+| 1 | | | |
+
+### Root Cause
+
+State the confirmed cause. Do not list guesses.
+
+### Resolution
+
+Show the exact change that corrected the problem.
+
+### Post-Fix Proof
+
+Repeat the original failing test and capture the successful result.
 
 ## What I Learned
 
-Summarize the technical lesson and how you would identify the issue faster next time.
+Summarize the technical lesson and how you would diagnose the issue faster in a production support setting.
