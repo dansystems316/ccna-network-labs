@@ -1,79 +1,146 @@
-# CCNA Network Labs Portfolio
+# VLAN and Inter-VLAN Routing Lab
 
-Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
+## Objective
 
-> **Current status:** The repository contains documented lab foundations. Packet Tracer files, topology screenshots, saved configurations, and real verification output are being added before individual labs are marked complete.
+Create multiple VLANs, configure switch access ports and an 802.1Q trunk, then provide inter-VLAN routing with router-on-a-stick.
 
-## What This Portfolio Demonstrates
-
-- Building segmented networks with VLANs, trunks, and inter-VLAN routing
-- Establishing and validating IPv4 and IPv6 connectivity
-- Configuring OSPF, EtherChannel, STP, ACLs, NAT/PAT, and Layer 2 security
-- Using Cisco IOS evidence to prove expected behavior
-- Diagnosing faults from symptoms instead of making random configuration changes
-- Recording root cause, corrective action, and post-fix validation
-
-## Start Here
-
-- [Lab index and completion status](LAB_INDEX.md)
-- [Troubleshooting cases and workflow](troubleshooting/README.md)
-- [Evidence checklist](PORTFOLIO_CHECKLIST.md)
-- [Reusable lab template](templates/lab-template.md)
-
-## Featured Labs
-
-| Lab | Skills shown | Evidence status |
-|---|---|---|
-| [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
-| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | Documentation ready; artifacts pending |
-| [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
-| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |
-| [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
-| [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
-| [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
-| [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Planned lab; artifacts pending |
-
-A lab will be marked **complete** only when it includes the topology, addressing plan, Packet Tracer file, configurations, verification output, and at least one documented troubleshooting case.
-
-## Troubleshooting Method
-
-1. Define the exact symptom and expected behavior.
-2. Test from the nearest point to the farthest point.
-3. Inspect Layer 1, Layer 2, Layer 3, routing, and policy in order.
-4. Record the command output that exposes the fault.
-5. Make one controlled change.
-6. Repeat the original test and capture proof of recovery.
-
-## Tools
-
-- Cisco Packet Tracer
-- Cisco IOS CLI
-- Wireshark
-- Linux networking tools
-- Git and GitHub
-
-## Repository Structure
+## Example Topology
 
 ```text
-ccna-network-labs/
-├── LAB_INDEX.md
-├── PORTFOLIO_CHECKLIST.md
-├── vlan-intervlan-routing/
-├── ospf/
-├── spanning-tree/
-├── etherchannel/
-├── acl/
-├── nat-pat/
-├── dhcp-snooping-dai/
-├── ipv6-routing/
-├── troubleshooting/
-└── templates/
+PC1 ---- SW1 ---- R1
+          |
+PC2 ------+
 ```
 
-## Next Build
+- PC1: VLAN 10
+- PC2: VLAN 20
+- SW1 to R1: 802.1Q trunk
 
-The highest-value next addition is a small-enterprise capstone combining VLAN segmentation, DHCP, inter-VLAN routing, OSPF, ACL policy, NAT/PAT, Layer 2 protections, device management, and monitoring. That project will show how the individual technologies work together in an operational network.
+## Addressing
 
-## About
+| Device | Interface | Address | Purpose |
+|---|---|---|---|
+| R1 | G0/0.10 | 192.168.10.1/24 | VLAN 10 gateway |
+| R1 | G0/0.20 | 192.168.20.1/24 | VLAN 20 gateway |
+| PC1 | NIC | 192.168.10.10/24 | VLAN 10 host |
+| PC2 | NIC | 192.168.20.10/24 | VLAN 20 host |
 
-Built by Dan Partain as practical evidence of Cisco networking and troubleshooting skills while preparing for a junior network role.
+## Switch Configuration
+
+```text
+enable
+configure terminal
+
+vlan 10
+ name USERS
+vlan 20
+ name ADMIN
+
+interface fastethernet0/1
+ switchport mode access
+ switchport access vlan 10
+
+interface fastethernet0/2
+ switchport mode access
+ switchport access vlan 20
+
+interface gigabitethernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+
+end
+write memory
+```
+
+## Router Configuration
+
+```text
+enable
+configure terminal
+
+interface gigabitethernet0/0
+ no shutdown
+
+interface gigabitethernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+
+interface gigabitethernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+
+end
+write memory
+```
+
+## Verification
+
+### Switch
+
+```text
+show vlan brief
+show interfaces trunk
+show interfaces switchport
+```
+
+### Router
+
+```text
+show ip interface brief
+show running-config interface gigabitethernet0/0.10
+show running-config interface gigabitethernet0/0.20
+```
+
+### End-to-End Test
+
+From PC1:
+
+```text
+ping 192.168.10.1
+ping 192.168.20.1
+ping 192.168.20.10
+```
+
+## Common Failure Scenarios
+
+### Wrong access VLAN
+
+Symptoms:
+- Host cannot reach its default gateway.
+- `show vlan brief` places the port in the wrong VLAN.
+
+Fix:
+
+```text
+interface fastethernet0/1
+ switchport access vlan 10
+```
+
+### VLAN missing from trunk
+
+Symptoms:
+- Local devices in the VLAN work, but traffic cannot cross the trunk.
+
+Check:
+
+```text
+show interfaces trunk
+```
+
+Fix the allowed VLAN list if needed.
+
+### Incorrect subinterface VLAN tag
+
+Symptoms:
+- Router subinterface is configured but the VLAN still cannot reach its gateway.
+
+Check that the VLAN ID in `encapsulation dot1Q` matches the switch VLAN.
+
+## What This Lab Demonstrates
+
+- VLAN creation
+- Access port assignment
+- 802.1Q trunking
+- Router subinterfaces
+- Default gateway configuration
+- Layer 2 vs. Layer 3 troubleshooting
