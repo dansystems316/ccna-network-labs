@@ -1,146 +1,157 @@
 # VLAN and Inter-VLAN Routing Lab
 
-## Objective
+> **Status:** In progress — the working Packet Tracer file, topology, device-state evidence, and one fault/recovery case are included. Text configuration exports, trunk output, and a captured PC1-to-PC2 test are still needed for a complete evidence set.
 
-Create multiple VLANs, configure switch access ports and an 802.1Q trunk, then provide inter-VLAN routing with router-on-a-stick.
+## Scenario
 
-## Example Topology
+A small office needs its user and administrative endpoints separated into different broadcast domains while retaining Layer 3 connectivity. I built VLAN 10 for users and VLAN 20 for administrators, configured an 802.1Q uplink, and used router-on-a-stick to provide a default gateway for each subnet.
 
-```text
-PC1 ---- SW1 ---- R1
-          |
-PC2 ------+
-```
+## Topology
 
-- PC1: VLAN 10
-- PC2: VLAN 20
-- SW1 to R1: 802.1Q trunk
+![Packet Tracer topology showing R1, SW1, PC1, and PC2](images/topology.png)
 
-## Addressing
+| Link | Switch port | Role |
+|---|---|---|
+| PC1 to SW1 | Fa0/1 | VLAN 10 access port |
+| PC2 to SW1 | Fa0/2 | VLAN 20 access port |
+| SW1 to R1 | Gi0/1 | 802.1Q trunk carrying VLANs 10 and 20 |
 
-| Device | Interface | Address | Purpose |
-|---|---|---|---|
-| R1 | G0/0.10 | 192.168.10.1/24 | VLAN 10 gateway |
-| R1 | G0/0.20 | 192.168.20.1/24 | VLAN 20 gateway |
-| PC1 | NIC | 192.168.10.10/24 | VLAN 10 host |
-| PC2 | NIC | 192.168.20.10/24 | VLAN 20 host |
+## Addressing and VLAN Plan
 
-## Switch Configuration
+| Device | Interface | Address | VLAN | Purpose |
+|---|---|---|---:|---|
+| R1 | G0/0.10 | 192.168.10.1/24 | 10 | USERS default gateway |
+| R1 | G0/0.20 | 192.168.20.1/24 | 20 | ADMIN default gateway |
+| PC1 | FastEthernet0 | 192.168.10.10/24 | 10 | User endpoint |
+| PC2 | FastEthernet0 | 192.168.20.10/24 | 20 | Administrative endpoint |
 
-```text
-enable
-configure terminal
+## Requirements
 
+- Place PC1 in VLAN 10 and PC2 in VLAN 20.
+- Carry both VLANs between SW1 and R1 over an 802.1Q trunk.
+- Use R1 subinterfaces as the two default gateways.
+- Verify endpoint-to-gateway and inter-VLAN connectivity.
+- Diagnose and repair a deliberately incorrect access-VLAN assignment.
+
+## Key Configuration
+
+### SW1
+
+```cisco
 vlan 10
  name USERS
 vlan 20
  name ADMIN
 
-interface fastethernet0/1
+interface FastEthernet0/1
+ description PC1-USERS
  switchport mode access
  switchport access vlan 10
+ spanning-tree portfast
 
-interface fastethernet0/2
+interface FastEthernet0/2
+ description PC2-ADMIN
  switchport mode access
  switchport access vlan 20
+ spanning-tree portfast
 
-interface gigabitethernet0/1
+interface GigabitEthernet0/1
+ description TRUNK-TO-R1
  switchport mode trunk
  switchport trunk allowed vlan 10,20
-
-end
-write memory
 ```
 
-## Router Configuration
+### R1
 
-```text
-enable
-configure terminal
-
-interface gigabitethernet0/0
+```cisco
+interface GigabitEthernet0/0
+ description TRUNK-TO-SW1
  no shutdown
 
-interface gigabitethernet0/0.10
+interface GigabitEthernet0/0.10
+ description VLAN10-USERS-GATEWAY
  encapsulation dot1Q 10
  ip address 192.168.10.1 255.255.255.0
 
-interface gigabitethernet0/0.20
+interface GigabitEthernet0/0.20
+ description VLAN20-ADMIN-GATEWAY
  encapsulation dot1Q 20
  ip address 192.168.20.1 255.255.255.0
-
-end
-write memory
 ```
 
 ## Verification
 
-### Switch
+The router evidence shows both subinterfaces in the `up/up` state with the expected gateway addresses.
 
-```text
+![R1 subinterfaces in the up/up state](images/router-interfaces.png)
+
+The repaired switch state places Fa0/1 in VLAN 10 and Fa0/2 in VLAN 20.
+
+![Correct VLAN membership after repair](images/vlan-membership-working.png)
+
+Useful verification commands:
+
+```cisco
 show vlan brief
 show interfaces trunk
-show interfaces switchport
-```
-
-### Router
-
-```text
+show interfaces FastEthernet0/1 switchport
 show ip interface brief
-show running-config interface gigabitethernet0/0.10
-show running-config interface gigabitethernet0/0.20
 ```
 
-### End-to-End Test
+## Troubleshooting Case: PC1 Cannot Reach Its Gateway
 
-From PC1:
+### Ticket
 
-```text
-ping 192.168.10.1
-ping 192.168.20.1
-ping 192.168.20.10
+PC1 in the USERS network cannot reach its default gateway at `192.168.10.1`.
+
+### Expected State
+
+PC1 uses address `192.168.10.10/24`, gateway `192.168.10.1`, and switch port Fa0/1 in VLAN 10.
+
+### Initial Evidence
+
+The original test returned four timeouts, confirming 100% packet loss to the local gateway.
+
+![PC1 gateway ping failing](images/ping-failed.png)
+
+### Investigation and Root Cause
+
+Because the unreachable address was PC1's directly connected default gateway, I checked the endpoint's access-layer assignment before changing the router. The command below showed that Fa0/1 was operating as a static access port in VLAN 20 instead of VLAN 10.
+
+```cisco
+show interfaces FastEthernet0/1 switchport
 ```
 
-## Common Failure Scenarios
+![Fa0/1 incorrectly assigned to VLAN 20](images/fault-fa0-1-wrong-vlan.png)
 
-### Wrong access VLAN
+Root cause: the switch access port and PC subnet did not match. PC1 sent untagged frames into VLAN 20, so they could not reach R1's VLAN 10 subinterface.
 
-Symptoms:
-- Host cannot reach its default gateway.
-- `show vlan brief` places the port in the wrong VLAN.
+### Corrective Change
 
-Fix:
-
-```text
-interface fastethernet0/1
+```cisco
+interface FastEthernet0/1
  switchport access vlan 10
 ```
 
-### VLAN missing from trunk
+### Post-Fix Validation
 
-Symptoms:
-- Local devices in the VLAN work, but traffic cannot cross the trunk.
+After restoring Fa0/1 to VLAN 10, PC1 received four replies from `192.168.10.1` with 0% packet loss.
 
-Check:
+![Successful gateway ping after correcting Fa0/1](images/ping-after-repair.png)
 
-```text
-show interfaces trunk
-```
+### Prevention and Faster Future Check
 
-Fix the allowed VLAN list if needed.
+Use interface descriptions, document the VLAN-to-port plan, and compare the endpoint subnet with `show vlan brief` and `show interfaces switchport` before investigating routing. This isolates an access-layer mismatch quickly and avoids unnecessary router changes.
 
-### Incorrect subinterface VLAN tag
+## Files
 
-Symptoms:
-- Router subinterface is configured but the VLAN still cannot reach its gateway.
+- [Open the Packet Tracer lab](packet-tracer/vlan-intervlan-routing.pkt)
+- [`images/`](images/) contains the topology and troubleshooting evidence.
 
-Check that the VLAN ID in `encapsulation dot1Q` matches the switch VLAN.
+## Skills Demonstrated
 
-## What This Lab Demonstrates
-
-- VLAN creation
-- Access port assignment
-- 802.1Q trunking
-- Router subinterfaces
-- Default gateway configuration
-- Layer 2 vs. Layer 3 troubleshooting
+- VLAN creation and access-port assignment
+- 802.1Q trunk configuration
+- Router-on-a-stick and default gateways
+- Layer 2 versus Layer 3 fault isolation
+- Evidence-based corrective changes and validation

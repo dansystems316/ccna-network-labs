@@ -1,159 +1,67 @@
-# Network Troubleshooting Workflow
+# Network Troubleshooting
 
-A repeatable troubleshooting process for Cisco labs and real networks.
+This section contains the workflow used across the labs and will hold evidence-based incident records. A troubleshooting case is not considered complete without genuine before-and-after output.
 
-## 1. Define the Failure
+## Troubleshooting Workflow
 
-Identify exactly what does not work.
+1. Define one exact failure.
+2. Record the expected behavior.
+3. Establish the scope: one host, one VLAN, one path, or the entire network.
+4. Test from the nearest point to the farthest point.
+5. Compare expected state with actual device output.
+6. Form a specific hypothesis.
+7. Make one controlled change.
+8. Repeat the original test and capture proof.
 
-Examples:
-- One host cannot reach its gateway.
-- Hosts in one VLAN cannot reach another VLAN.
-- An OSPF neighbor is missing.
-- A trunk is not carrying a VLAN.
-- A route exists but traffic is still blocked.
+## Layered Checks
 
-Avoid starting with random configuration changes.
+| Area | Questions | Useful commands |
+|---|---|---|
+| Physical/interface | Is the interface present, enabled, and up/up? | `show interfaces`, `show ip interface brief` |
+| Layer 2 | Is the port in the right VLAN? Is the VLAN carried and forwarding? | `show vlan brief`, `show interfaces trunk`, `show spanning-tree`, `show mac address-table` |
+| Link aggregation | Did all expected members join the bundle? | `show etherchannel summary`, `show lacp neighbor` |
+| Layer 3 | Are address, mask, gateway, ARP, and routes correct? | `show ip interface brief`, `show arp`, `show ip route` |
+| OSPF | Are neighbors full and networks advertised? | `show ip ospf neighbor`, `show ip ospf interface brief`, `show ip protocols` |
+| Policy/NAT | Is traffic denied or failing translation? | `show access-lists`, `show ip interface`, `show ip nat translations`, `show ip nat statistics` |
+| Access security | Is DHCP or ARP inspection dropping valid traffic? | `show ip dhcp snooping`, `show ip dhcp snooping binding`, `show ip arp inspection statistics` |
+| IPv6 | Are prefixes, neighbors, and routes correct? | `show ipv6 interface brief`, `show ipv6 neighbors`, `show ipv6 route` |
 
-## 2. Check Layer 1
+## Progressive Testing
 
-```text
-show ip interface brief
-show interfaces
-```
-
-Check:
-- Interface status
-- Line protocol
-- Cabling
-- Shutdown state
-- Speed/duplex issues when relevant
-
-## 3. Check Layer 2
-
-```text
-show vlan brief
-show interfaces trunk
-show interfaces switchport
-show mac address-table
-show spanning-tree
-show etherchannel summary
-```
-
-Check:
-- Correct access VLAN
-- Trunk state
-- Allowed VLANs
-- Native VLAN
-- STP forwarding/blocking state
-- EtherChannel membership
-- MAC learning
-
-## 4. Check Layer 3
+Test from the closest dependency outward:
 
 ```text
-show ip interface brief
-show ip route
-show arp
-show ip protocols
+local TCP/IP stack
+local interface
+default gateway
+next hop
+remote gateway
+remote host or service
 ```
 
-Check:
-- IP address
-- Subnet mask
-- Default gateway
-- Connected routes
-- Static routes
-- Dynamic routes
+Use ping, traceroute, ARP/neighbor tables, and device state to identify the first failing boundary.
 
-## 5. Check Routing Protocols
+## Case Index
 
-### OSPF
+| Case | Lab | Symptom | Root cause | Evidence |
+|---|---|---|---|---|
+| Pending | VLAN | Host cannot reach its gateway | To be confirmed in a real lab | Before/after output pending |
+| Pending | OSPF | Neighbor table is empty | To be confirmed in a real lab | Before/after output pending |
+| Pending | NAT/PAT | No translations appear | To be confirmed in a real lab | Before/after output pending |
 
-```text
-show ip ospf neighbor
-show ip ospf interface brief
-show ip protocols
-show ip route ospf
-```
+Replace each pending row with an actual case after reproducing and fixing the fault. Good candidates from hands-on practice include a wrong access VLAN, trunk allowed-VLAN omission, OSPF subnet-mask mismatch, EtherChannel inconsistency, ACL direction error, missing NAT inside/outside designation, or incorrect DHCP trust boundary.
 
-Check:
-- Neighbor state
-- Area number
-- Network statements
-- Timers
-- Router IDs
-- Passive interfaces
+## Incident Record Template
 
-## 6. Check Security and Policy
+Use [the lab template](../templates/lab-template.md) or create a separate case file containing:
 
-```text
-show access-lists
-show ip interface
-show port-security interface
-show ip dhcp snooping
-show ip arp inspection
-```
-
-An otherwise correct route may still fail because policy blocks the traffic.
-
-## 7. Test Progressively
-
-Test from nearest to farthest:
-
-```text
-ping 127.0.0.1
-ping <local-interface>
-ping <default-gateway>
-ping <next-hop>
-ping <remote-host>
-traceroute <remote-host>
-```
-
-This helps identify where forwarding stops.
-
-## 8. Compare Expected vs. Actual State
-
-For every problem, write down:
-
-- What should happen?
-- What is actually happening?
-- Which command proves the difference?
-
-## 9. Make One Change at a Time
-
-After each change, re-run the verification command that exposed the fault.
-
-## Core Cisco Verification Commands
-
-```text
-show running-config
-show startup-config
-show ip interface brief
-show interfaces status
-show vlan brief
-show interfaces trunk
-show mac address-table
-show spanning-tree
-show etherchannel summary
-show ip route
-show arp
-show cdp neighbors detail
-show lldp neighbors detail
-show access-lists
-show ip ospf neighbor
-show ip protocols
-```
-
-## Documentation Standard
-
-When recording a troubleshooting case, capture:
-
-1. Symptom
-2. Expected behavior
-3. Commands used
-4. Relevant output
-5. Root cause
-6. Configuration change
-7. Verification after the fix
-8. Lesson learned
+1. Ticket or symptom
+2. Scope and user impact
+3. Expected behavior
+4. Initial command output
+5. Hypothesis
+6. Tests and observations
+7. Confirmed root cause
+8. Corrective change
+9. Post-fix output
+10. Prevention or escalation note

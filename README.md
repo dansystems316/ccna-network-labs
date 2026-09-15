@@ -1,49 +1,63 @@
-# CCNA Network Labs
+# CCNA Network Labs Portfolio
 
-Hands-on Cisco networking labs documenting configuration, verification, and troubleshooting practice for CCNA-level networking.
+Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
 
-## Purpose
+> **Current status:** The repository contains documented lab foundations. Packet Tracer files, topology screenshots, saved configurations, and real verification output are being added before individual labs are marked complete.
 
-This repository is a practical networking portfolio. Each lab is designed to show not only the final configuration, but also how the network was verified and how faults were diagnosed.
+## What This Portfolio Demonstrates
 
-## Lab Areas
+- Building segmented networks with VLANs, trunks, and inter-VLAN routing
+- Establishing and validating IPv4 and IPv6 connectivity
+- Configuring OSPF, EtherChannel, STP, ACLs, NAT/PAT, and Layer 2 security
+- Using Cisco IOS evidence to prove expected behavior
+- Diagnosing faults from symptoms instead of making random configuration changes
+- Recording root cause, corrective action, and post-fix validation
 
-- VLANs and inter-VLAN routing
-- 802.1Q trunks and native VLANs
-- STP / Rapid PVST+
-- EtherChannel / LACP
-- OSPF
-- IPv4 and IPv6 static routing
-- Standard and extended ACLs
-- NAT / PAT
-- DHCP and DHCP relay
-- DHCP Snooping and Dynamic ARP Inspection
-- Port security
-- NTP, Syslog, SNMP, CDP, and LLDP
-- Wireless fundamentals
-- Network troubleshooting with Cisco IOS and Wireshark
+## Start Here
 
-## Verification Commands
+- [Lab index and completion status](LAB_INDEX.md)
+- [Troubleshooting cases and workflow](troubleshooting/README.md)
+- [Evidence checklist](PORTFOLIO_CHECKLIST.md)
+- [Reusable lab template](templates/lab-template.md)
 
-```text
-show ip interface brief
-show interfaces trunk
-show vlan brief
-show spanning-tree
-show etherchannel summary
-show ip route
-show ip ospf neighbor
-show ip protocols
-show access-lists
-show ip nat translations
-show cdp neighbors
-show lldp neighbors
-```
+## Featured Labs
+
+| Lab | Skills shown | Evidence status |
+|---|---|---|
+| [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
+| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | Documentation ready; artifacts pending |
+| [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
+| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |
+| [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
+| [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
+| [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
+| [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Planned lab; artifacts pending |
+
+A lab will be marked **complete** only when it includes the topology, addressing plan, Packet Tracer file, configurations, verification output, and at least one documented troubleshooting case.
+
+## Troubleshooting Method
+
+1. Define the exact symptom and expected behavior.
+2. Test from the nearest point to the farthest point.
+3. Inspect Layer 1, Layer 2, Layer 3, routing, and policy in order.
+4. Record the command output that exposes the fault.
+5. Make one controlled change.
+6. Repeat the original test and capture proof of recovery.
+
+## Tools
+
+- Cisco Packet Tracer
+- Cisco IOS CLI
+- Wireshark
+- Linux networking tools
+- Git and GitHub
 
 ## Repository Structure
 
 ```text
 ccna-network-labs/
+├── LAB_INDEX.md
+├── PORTFOLIO_CHECKLIST.md
 ├── vlan-intervlan-routing/
 ├── ospf/
 ├── spanning-tree/
@@ -56,28 +70,10 @@ ccna-network-labs/
 └── templates/
 ```
 
-## Lab Documentation Standard
+## Next Build
 
-Each completed lab should contain:
+The highest-value next addition is a small-enterprise capstone combining VLAN segmentation, DHCP, inter-VLAN routing, OSPF, ACL policy, NAT/PAT, Layer 2 protections, device management, and monitoring. That project will show how the individual technologies work together in an operational network.
 
-1. Objective
-2. Topology
-3. Addressing table
-4. Configuration
-5. Verification
-6. Problem encountered
-7. Troubleshooting process
-8. Resolution
-9. What I learned
+## About
 
-## Tools
-
-- Cisco Packet Tracer
-- Cisco IOS
-- Wireshark
-- Linux command-line networking tools
-- Git and GitHub
-
-## Current Goal
-
-Build a documented collection of repeatable networking labs that demonstrates practical Cisco configuration and troubleshooting skills.
+Built by Dan Partain as practical evidence of Cisco networking and troubleshooting skills while preparing for a junior network role.
