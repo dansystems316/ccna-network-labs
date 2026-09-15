@@ -1,116 +1,79 @@
-# OSPF Single-Area Lab
+# CCNA Network Labs Portfolio
 
-## Objective
+Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
 
-Configure OSPFv2 in area 0 between three routers, verify neighbor adjacencies, and confirm that each router learns remote networks dynamically.
+> **Current status:** The repository contains documented lab foundations. Packet Tracer files, topology screenshots, saved configurations, and real verification output are being added before individual labs are marked complete.
 
-## Example Topology
+## What This Portfolio Demonstrates
 
-```text
-LAN-A -- R1 ---- R2 ---- R3 -- LAN-C
-              |
-            LAN-B
-```
+- Building segmented networks with VLANs, trunks, and inter-VLAN routing
+- Establishing and validating IPv4 and IPv6 connectivity
+- Configuring OSPF, EtherChannel, STP, ACLs, NAT/PAT, and Layer 2 security
+- Using Cisco IOS evidence to prove expected behavior
+- Diagnosing faults from symptoms instead of making random configuration changes
+- Recording root cause, corrective action, and post-fix validation
 
-## Example Addressing
+## Start Here
 
-| Device | Interface | Address |
+- [Lab index and completion status](LAB_INDEX.md)
+- [Troubleshooting cases and workflow](troubleshooting/README.md)
+- [Evidence checklist](PORTFOLIO_CHECKLIST.md)
+- [Reusable lab template](templates/lab-template.md)
+
+## Featured Labs
+
+| Lab | Skills shown | Evidence status |
 |---|---|---|
-| R1 | G0/0 | 192.168.10.1/24 |
-| R1 | G0/1 | 10.0.12.1/30 |
-| R2 | G0/0 | 10.0.12.2/30 |
-| R2 | G0/1 | 10.0.23.1/30 |
-| R2 | G0/2 | 192.168.20.1/24 |
-| R3 | G0/0 | 10.0.23.2/30 |
-| R3 | G0/1 | 192.168.30.1/24 |
+| [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
+| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; Packet Tracer lab and troubleshooting evidence included |
+| [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
+| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |
+| [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
+| [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
+| [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
+| [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Planned lab; artifacts pending |
 
-## Configuration
+A lab will be marked **complete** only when it includes the topology, addressing plan, Packet Tracer file, configurations, verification output, and at least one documented troubleshooting case.
 
-### R1
+## Troubleshooting Method
 
-```text
-router ospf 1
- router-id 1.1.1.1
- network 192.168.10.0 0.0.0.255 area 0
- network 10.0.12.0 0.0.0.3 area 0
-```
+1. Define the exact symptom and expected behavior.
+2. Test from the nearest point to the farthest point.
+3. Inspect Layer 1, Layer 2, Layer 3, routing, and policy in order.
+4. Record the command output that exposes the fault.
+5. Make one controlled change.
+6. Repeat the original test and capture proof of recovery.
 
-### R2
+## Tools
 
-```text
-router ospf 1
- router-id 2.2.2.2
- network 10.0.12.0 0.0.0.3 area 0
- network 10.0.23.0 0.0.0.3 area 0
- network 192.168.20.0 0.0.0.255 area 0
-```
+- Cisco Packet Tracer
+- Cisco IOS CLI
+- Wireshark
+- Linux networking tools
+- Git and GitHub
 
-### R3
-
-```text
-router ospf 1
- router-id 3.3.3.3
- network 10.0.23.0 0.0.0.3 area 0
- network 192.168.30.0 0.0.0.255 area 0
-```
-
-## Verification
+## Repository Structure
 
 ```text
-show ip ospf neighbor
-show ip route ospf
-show ip protocols
-show ip ospf interface brief
+ccna-network-labs/
+├── LAB_INDEX.md
+├── PORTFOLIO_CHECKLIST.md
+├── vlan-intervlan-routing/
+├── ospf/
+├── spanning-tree/
+├── etherchannel/
+├── acl/
+├── nat-pat/
+├── dhcp-snooping-dai/
+├── ipv6-routing/
+├── troubleshooting/
+└── templates/
 ```
 
-Expected result:
-- Adjacent routers reach FULL state.
-- Remote networks appear in the routing table with an `O` code.
-- End hosts can reach remote LANs.
+## Next Build
 
-## Troubleshooting Checklist
+The highest-value next addition is a small-enterprise capstone combining VLAN segmentation, DHCP, inter-VLAN routing, OSPF, ACL policy, NAT/PAT, Layer 2 protections, device management, and monitoring. That project will show how the individual technologies work together in an operational network.
 
-If a neighbor does not form:
+## About
 
-1. Confirm both interfaces are up/up.
-2. Verify IP addresses and subnet masks.
-3. Confirm both interfaces are in the same IP subnet.
-4. Verify OSPF is enabled on the interfaces.
-5. Verify both interfaces are in the same OSPF area.
-6. Check hello/dead timers.
-7. Check for passive interfaces.
-8. Check authentication if configured.
-9. Check duplicate router IDs.
-
-Useful commands:
-
-```text
-show ip interface brief
-show running-config | section router ospf
-show ip ospf interface
-show ip ospf neighbor
-show ip protocols
-```
-
-## Example Fault: Subnet Mask Mismatch
-
-A physical link can be up while OSPF adjacency still fails because the two router interfaces do not agree on the Layer 3 subnet.
-
-Check both sides carefully:
-
-```text
-show ip interface brief
-show running-config interface gigabitethernet0/0
-```
-
-Correct the addressing, then re-check the neighbor table.
-
-## What This Lab Demonstrates
-
-- OSPF process configuration
-- Router IDs
-- Wildcard masks
-- Area 0 operation
-- Neighbor verification
-- Dynamic route verification
-- Systematic adjacency troubleshooting
+Built by Dan Partain as practical evidence of Cisco networking and troubleshooting skills while preparing for a junior network role.
