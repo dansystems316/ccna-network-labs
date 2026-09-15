@@ -24,7 +24,7 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 
 | Lab | Skills shown | Evidence status |
 |---|---|---|
-| [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | Documentation ready; artifacts pending |
+| [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
 | [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | Documentation ready; artifacts pending |
 | [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
 | [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |

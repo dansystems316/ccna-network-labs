@@ -9,7 +9,7 @@ Status definitions:
 
 | Priority | Lab | Role relevance | Current status | Evidence needed next |
 |---:|---|---|---|---|
-| 1 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | Core switching and gateway support | Documentation ready | `.pkt`, topology PNG, configs, trunk/VLAN output, successful pings, one fault |
+| 1 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | Core switching and gateway support | In progress | Add text configs, trunk output, and captured PC1-to-PC2 ping; `.pkt`, topology, VLAN/router state, and access-VLAN fault evidence are included |
 | 2 | [OSPF single area](ospf/) | Junior routing and escalation work | Documentation ready | `.pkt`, topology PNG, configs, neighbors/routes, end-to-end tests, failed adjacency case |
 | 3 | [Spanning Tree](spanning-tree/) | Loop prevention and switch troubleshooting | Planned | Three-switch redundant topology, root/port-role output, link-failure reconvergence |
 | 4 | [EtherChannel](etherchannel/) | Uplink resiliency and bandwidth | Planned | LACP bundle, member-state output, deliberate mismatch and repair |
