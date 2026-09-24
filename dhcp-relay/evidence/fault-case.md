@@ -22,7 +22,7 @@ The captured change confirms that R1 G0/0.10's helper was removed. PC1 failed to
 ## Confirmation Still Needed
 
 1. The supplied [R1](../configs/R1-running-config.txt), [R2](../configs/R2-running-config.txt), and [SW1](../configs/SW1-running-config.txt) configs show the final helper, pool, and VLAN settings. The [later saved `.pkt`](../dhcp-relay-final.pkt) is uploaded; open it in Packet Tracer to confirm it contains these settings.
-2. The [new PC2 server ping](../images/pc2-to-server-ping.png) shows its title and 4/4 replies. The [new PC1 ping crop](../images/pc1-to-server-ping-unattributed.png) has 4/4 replies but no PC title. Capture one with PC1 title visible, plus a current R2 `show ip dhcp binding` if a contemporaneous post-repair binding is needed. The existing binding and gateway ping captures have no proved timing relative to this repair.
+2. The [identified PC1 server ping](../images/pc1-to-server-ping-identified.png) and [identified PC2 server ping](../images/pc2-to-server-ping.png) each show their title and 4/4 replies. Their exact timing relative to the helper restoration is not visible; the earlier [PC1 ping crop](../images/pc1-to-server-ping-unattributed.png) lacked its title. Capture a current R2 `show ip dhcp binding` if a contemporaneous post-repair binding is needed. The existing binding and gateway ping captures have no proved timing relative to this repair.
 3. Record how the fresh PC1 request was forced and the exact test order if known. Do not invent those details from screenshots.
 
 ## Prevention and Faster Check
