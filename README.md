@@ -2,7 +2,7 @@
 
 Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
 
-> **Current status:** The repository contains documented lab foundations. Packet Tracer files, topology screenshots, saved configurations, and real verification output are being added before individual labs are marked complete.
+> **Current status:** DHCP relay is complete (owner verified); VLAN and OSPF have real artifacts but need final evidence. Six additional labs have build and verification playbooks, with testing still pending.
 
 ## What This Portfolio Demonstrates
 
@@ -17,6 +17,7 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 ## Start Here
 
 - [Lab index and completion status](LAB_INDEX.md)
+- [Fast portfolio finish plan](PORTFOLIO_FINISH_PLAN.md)
 - [Troubleshooting cases and workflow](troubleshooting/README.md)
 - [Evidence checklist](PORTFOLIO_CHECKLIST.md)
 - [Reusable lab template](templates/lab-template.md)
@@ -28,12 +29,12 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
 | [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; Packet Tracer file and verification/fault images included; running configurations pending |
 | [DHCP relay troubleshooting](dhcp-relay/) | Client address failure, relay placement, server pools, return path | Complete; final Packet Tracer file, configs, client tests, and failure/repair evidence |
-| [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
-| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |
-| [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
-| [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
-| [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
-| [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Planned lab; artifacts pending |
+| [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Documentation ready; Packet Tracer build and evidence pending |
+| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Documentation ready; Packet Tracer build and evidence pending |
+| [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Documentation ready; Packet Tracer build and evidence pending |
+| [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Documentation ready; Packet Tracer build and evidence pending |
+| [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Documentation ready; Packet Tracer build and evidence pending |
+| [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Documentation ready; Packet Tracer build and evidence pending |
 
 A lab will be marked **complete** only when it includes the topology, addressing plan, Packet Tracer file, configurations, verification output, and at least one documented troubleshooting case.
 
@@ -50,8 +51,6 @@ A lab will be marked **complete** only when it includes the topology, addressing
 
 - Cisco Packet Tracer
 - Cisco IOS CLI
-- Wireshark
-- Linux networking tools
 - Git and GitHub
 
 ## Repository Structure
@@ -59,6 +58,7 @@ A lab will be marked **complete** only when it includes the topology, addressing
 ```text
 ccna-network-labs/
 ├── LAB_INDEX.md
+├── PORTFOLIO_FINISH_PLAN.md
 ├── PORTFOLIO_CHECKLIST.md
 ├── vlan-intervlan-routing/
 ├── ospf/
@@ -75,7 +75,7 @@ ccna-network-labs/
 
 ## Next Build
 
-The highest-value next addition is a small-enterprise capstone combining VLAN segmentation, DHCP, inter-VLAN routing, OSPF, ACL policy, NAT/PAT, Layer 2 protections, device management, and monitoring. That project will show how the individual technologies work together in an operational network.
+Finish the existing VLAN and OSPF lab exports, then follow the [fast finish plan](PORTFOLIO_FINISH_PLAN.md) for STP and the remaining small troubleshooting cases. A larger capstone can follow once the focused labs have real evidence.
 
 ## About
 
