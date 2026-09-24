@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and eight screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways. Relay helper placement, server return routes, end-to-end reachability, saved configurations, and a documented failure/repair remain unproven. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and nine screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by the server binding table. Relay helper placement, server return routes, end-to-end reachability, saved configurations, and a documented failure/repair remain unproven. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -83,6 +83,7 @@ ip dhcp pool ADMINPOOL
 | [R2 pool counters](images/r2-dhcp-pools.png) | ADMINPOOL shows 1 leased address; USERSPOOL shows 0 at capture time. Counters do not identify a client or prove a usable lease. |
 | [PC1 DHCP lease](images/pc1-lease.png) | FastEthernet0 `192.168.10.21/24`, gateway `192.168.10.1`, DHCP server `10.0.12.2` |
 | [PC2 DHCP lease](images/pc2-lease.png) | FastEthernet0 `192.168.20.21/24`, gateway `192.168.20.1`, DHCP server `10.0.12.2` |
+| [R2 DHCP bindings](images/r2-dhcp-bindings.png) | `192.168.10.21` maps to PC1 MAC `00E0.8F10.5797`; `192.168.20.21` maps to PC2 MAC `0001.43D1.67BD`; both automatic |
 
 The CLI screenshots have generic `Router#` and `Switch#` prompts, so device attribution comes from the command content and the supplied context. Export named device configurations to establish it unambiguously. The older pool counters and config should not be treated as current after the two client lease captures. These images are baseline diagnostics, not before/after fault proof.
 
@@ -138,8 +139,9 @@ dhcp-relay/
     ├── r1-interfaces.png             # supplied
     ├── r2-dhcp-config.png, r2-dhcp-pools.png # supplied
     ├── pc1-lease.png, pc2-lease.png   # supplied
+    ├── r2-dhcp-bindings.png           # supplied
     ├── pc1-before.png                # optional supporting screenshots
     └── pc1-after.png
 ```
 
-The `.pkt` and eight screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, verified `.pkt`, sanitized device configurations, actual client and routing verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and nine screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, verified `.pkt`, sanitized device configurations, actual client and routing verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
