@@ -9,18 +9,22 @@ A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0
 | Step | Submitted evidence | Direct observation | Limit |
 |---|---|---|---|
 | Change | [VLAN 10 helper removal](../images/fault-remove-vlan10-helper.png) | `R1(config)#int g0/0.10` followed by `R1(config-subif)#no ip helper-address 10.0.12.2` | Command and target interface are visible; a separate earlier crop shows the same removal command without interface context. |
+| Fault scope | [PC1 failed, PC2 working](../images/fault-pc1-failed-pc2-working.png) | PC1 title shows `DHCP request failed` with no IPv4 address displayed; PC2 title shows `DHCP request successful`, `192.168.20.21/24`, gateway `192.168.20.1` | The screenshot has both clients side by side. It does not itself show the router command or the method used to force the request. |
 | Failed test | [APIPA result](../images/fault-client-apipa.png) | DHCP failed; FastEthernet0 has `169.254.87.151/16`, gateway `0.0.0.0` | The crop does not show the PC title or how a fresh request was forced. |
 | Repair | [Restore helper](../images/repair-restore-helper.png) | `R1(config-subif)#ip helper-address 10.0.12.2` | The crop does not identify the subinterface. |
 | Retest | [Restored lease](../images/repair-client-lease.png) | DHCP request successful; `192.168.10.21/24`, gateway `192.168.10.1`, DNS `1.1.1.1` | The crop does not show the PC title or post-repair pings. |
 | Identified PC1 lease | [PC1 title and successful request](../images/repair-pc1-identified-lease.png) | PC1 window shows DHCP successful with `192.168.10.21/24`, gateway `192.168.10.1` | This identifies a successful PC1 lease, but its timing relative to the cropped failure cannot be proved from the images alone. |
 
-## Working Hypothesis
+## Root Cause and Scope
 
-The captured change confirms that R1 G0/0.10's helper was removed. Without a relay, a new DHCP broadcast on VLAN 10 cannot reach R2 across the routed link. The submitted APIPA result and restored lease are consistent with that cause. The failed-client image still lacks a PC title, and PC2's state during the fault is absent, so the exact observed scope remains qualified.
+The captured change confirms that R1 G0/0.10's helper was removed. PC1 failed to get a lease while PC2 on VLAN 20 continued to receive one. The VLAN 10 DHCP broadcasts could not reach the remote server without the relay on the client-facing subinterface. The separate APIPA crop records one fallback result but lacks a PC title; use the side-by-side image for client attribution. After the helper was restored, an identified PC1 screenshot shows a valid lease. The submitted images establish the fault, scope, and recovery sequence, though the exact request method and capture times are not recorded.
 
 ## Confirmation Still Needed
 
-1. Capture `show running-config interface GigabitEthernet0/0.10` during the fault and after repair, including a visible Router0 identity. Preserve G0/0.20 helper state as the control.
-2. Capture PC1's title and a forced fresh DHCP request during the fault, plus PC2's successful lease at the same stage. Note whether DHCP was renewed by toggling Static then DHCP or another method.
-3. Capture post-repair PC1 gateway and server pings with its title visible, and a current R2 `show ip dhcp binding`; export final sanitized configs for all three devices and save the repaired `.pkt`.
-4. Add the confirmed root cause, exact test order, and prevention note here after checking those observations. Never relabel the initial working baseline as post-fix proof.
+1. Capture final R1 G0/0.10 and G0/0.20 helper lines, and export sanitized configurations for R1, R2, and SW1. Save the repaired `.pkt`.
+2. Capture post-repair server pings with PC1 and PC2 titles visible, plus a current R2 `show ip dhcp binding`. The identified gateway pings already exist, though their timing relative to this repair is not shown.
+3. Record how the fresh PC1 request was forced and the exact test order if known. Do not invent those details from screenshots.
+
+## Prevention and Faster Check
+
+Compare helper addresses on all client-facing gateway interfaces, verify the remote pool and return routes, and force a new DHCP request before declaring a fix. Use a second VLAN client as a scope control when only one client segment reports address failures.
