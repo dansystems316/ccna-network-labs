@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** A Packet Tracer project was supplied and added, but its topology, configuration, and behavior have not been independently verified. Device exports, topology image, and real before/after output are still needed. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and six screenshots are present. The screenshots establish the visible topology, VLAN/trunk state, R1 interface addresses, and R2 pool configuration; client leases, relay helper placement, routes, end-to-end reachability, and a repaired failure remain unproven. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -13,12 +13,14 @@ PC1 (VLAN 10) -- SW1 -- 802.1Q trunk -- R1 -- 10.0.12.0/30 -- R2 (DHCP server)
 PC2 (VLAN 20) -- SW1 -- same trunk -- R1
 ```
 
-The [supplied Packet Tracer project](packet-tracer/dhcp-relay.pkt) is available for inspection. The diagram and addresses below remain a target design until checked against the project. Save a labeled screenshot to `images/topology.png` and reconcile any differences. Interface names below assume routers with GigabitEthernet0/0 and GigabitEthernet0/1; adjust the names to the actual Packet Tracer model and record that choice.
+![Packet Tracer layout: PC1 and PC2 through Switch0 and Router0 to Router1](images/topology.png)
+
+The [supplied Packet Tracer project](packet-tracer/dhcp-relay.pkt) contains a visible two-PC, 2960 Switch0, 2911 Router0, and 2911 Router1 layout. Screenshots identify Router0 as R1 and show R1 G0/0.10 `192.168.10.1`, G0/0.20 `192.168.20.1`, and G0/1 `10.0.12.1`, all up/up. The screenshots do not show Router1's interface address or which PC connects to each access port; verify these against the project before treating the rest of the table as observed state.
 
 | Device | Interface / VLAN | Address or expected lease | Gateway / purpose |
 |---|---|---|---|
-| PC1 | NIC / VLAN 10 | DHCP: `192.168.10.100–199/24` | `192.168.10.1` |
-| PC2 | NIC / VLAN 20 | DHCP: `192.168.20.100–199/24` | `192.168.20.1` |
+| PC1 | NIC / VLAN 10 | DHCP on `192.168.10.0/24`; lease pending | `192.168.10.1` |
+| PC2 | NIC / VLAN 20 | DHCP on `192.168.20.0/24`; lease pending | `192.168.20.1` |
 | SW1 | PC1 access port | VLAN 10 | Client attachment |
 | SW1 | PC2 access port | VLAN 20 | Client attachment |
 | SW1 | R1 uplink | Trunk allowing 10, 20 | Router on a stick |
@@ -27,11 +29,11 @@ The [supplied Packet Tracer project](packet-tracer/dhcp-relay.pkt) is available 
 | R1 | G0/1 | `10.0.12.1/30` | Routed link to R2 |
 | R2 | G0/0 | `10.0.12.2/30` | DHCP service address |
 
-R2 needs return routes to `192.168.10.0/24` and `192.168.20.0/24` through `10.0.12.1`. Set R2 DHCP pools `VLAN10` and `VLAN20` to the corresponding `/24` networks, default routers `.1`, and exclude `.1–.99` and `.200–.254` from assignment. No DNS service is required for this ticket. PC addresses in the table are expected ranges, not observed leases.
+The table is the target addressing plan, except for the R1 addresses shown in the screenshot. The captured R2 configuration uses pool names `USERSPOOL` (`192.168.10.0/24`) and `ADMINPOOL` (`192.168.20.0/24`), excludes several low addresses, and specifies DNS `1.1.1.1`. It shows `default-router 192.168.10.1` for USERSPOOL but **no default-router in ADMINPOOL**. Add `default-router 192.168.20.1` under ADMINPOOL and capture the corrected output before claiming the admin client receives a usable gateway. R2's return routes through R1 and its own address are still to be checked. The PC leases remain unknown.
 
 ## Key Configuration to Build
 
-Example IOS commands, to be adapted to the actual interface names. Save full sanitized running configurations separately after testing.
+Example IOS commands for the target design, not an export from the uploaded project. Reconcile interface assignments with the actual configuration. Save full sanitized running configurations separately after testing.
 
 ```cisco
 ! SW1: assign PC access ports to VLAN 10 and VLAN 20;
@@ -59,19 +61,28 @@ interface GigabitEthernet0/0
  no shutdown
 ip route 192.168.10.0 255.255.255.0 10.0.12.1
 ip route 192.168.20.0 255.255.255.0 10.0.12.1
-ip dhcp excluded-address 192.168.10.1 192.168.10.99
-ip dhcp excluded-address 192.168.10.200 192.168.10.254
-ip dhcp excluded-address 192.168.20.1 192.168.20.99
-ip dhcp excluded-address 192.168.20.200 192.168.20.254
-ip dhcp pool VLAN10
+! Exclusions in the project must be reviewed and preserved or revised intentionally.
+ip dhcp pool USERSPOOL
  network 192.168.10.0 255.255.255.0
  default-router 192.168.10.1
-ip dhcp pool VLAN20
+ip dhcp pool ADMINPOOL
  network 192.168.20.0 255.255.255.0
  default-router 192.168.20.1
 ```
 
 ## Verification and Evidence Plan
+
+### Evidence received so far
+
+| Screenshot | Directly supported observation |
+|---|---|
+| [SW1 VLANs](images/sw1-vlans.png) | VLAN 10 `USERS` on Fa0/1; VLAN 20 `ADMIN` on Fa0/2 |
+| [SW1 trunk](images/sw1-trunk.png) | G0/1 is trunking, with VLANs 10 and 20 allowed, active, and forwarding |
+| [R1 interfaces](images/r1-interfaces.png) | G0/0.10 `.10.1`, G0/0.20 `.20.1`, and G0/1 `10.0.12.1` are up/up |
+| [R2 DHCP configuration](images/r2-dhcp-config.png) | USERSPOOL includes its gateway; ADMINPOOL lacks a `default-router` line |
+| [R2 pool counters](images/r2-dhcp-pools.png) | ADMINPOOL shows 1 leased address; USERSPOOL shows 0 at capture time. Counters do not identify a client or prove a usable lease. |
+
+The CLI screenshots have generic `Router#` and `Switch#` prompts, so device attribution comes from the command content and the supplied context. Export named device configurations to establish it unambiguously. These images are baseline diagnostics, not before/after fault proof.
 
 Run the exact commands supported by the chosen Packet Tracer IOS image. Save copied text in `evidence/` with headings identifying the device, test stage, and command; use screenshots only as supporting evidence. On PCs, use Desktop > IP Configuration to request or renew DHCP, and Command Prompt for the commands below. Packet Tracer's PC CLI may not support every desktop Windows `ipconfig` switch; toggling Static then DHCP in IP Configuration can force a fresh request.
 
@@ -109,7 +120,7 @@ Follow the [repository troubleshooting workflow](../troubleshooting/README.md): 
 dhcp-relay/
 ├── README.md
 ├── packet-tracer/
-│   └── dhcp-relay.pkt                 # add after building and testing
+│   └── dhcp-relay.pkt                 # supplied; behavior still to verify
 ├── configs/
 │   ├── R1-running-config.txt         # add after export
 │   ├── R2-running-config.txt
@@ -120,9 +131,12 @@ dhcp-relay/
 │   ├── pc1-after.txt
 │   └── fault-case.md
 └── images/
-    ├── topology.png
+    ├── topology.png                  # supplied
+    ├── sw1-vlans.png, sw1-trunk.png  # supplied
+    ├── r1-interfaces.png             # supplied
+    ├── r2-dhcp-config.png, r2-dhcp-pools.png # supplied
     ├── pc1-before.png                # optional supporting screenshots
     └── pc1-after.png
 ```
 
-The `.pkt` file is present. Other filenames above are targets, not completed evidence. A complete lab needs the real topology, addressing plan, verified `.pkt`, sanitized device configurations, actual verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and six screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, verified `.pkt`, sanitized device configurations, actual client and routing verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
