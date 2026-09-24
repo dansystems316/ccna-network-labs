@@ -2,7 +2,7 @@
 
 ## Ticket and Expected State
 
-A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0.12.2`) through R1 G0/0.10 and use gateway `192.168.10.1`. The earlier [client lease](../images/pc1-lease.png), [R1 helper configuration](../images/r1-helper-config.png), and [server bindings](../images/r2-dhcp-bindings.png) show a working baseline before the submitted fault screenshots. Exact capture times and whether the saved `.pkt` includes this later experiment are not established.
+A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0.12.2`) through R1 G0/0.10 and use gateway `192.168.10.1`. The earlier [client lease](../images/pc1-lease.png), [R1 helper configuration](../images/r1-helper-config.png), and [server bindings](../images/r2-dhcp-bindings.png) show a working baseline before the submitted fault screenshots. Exact capture times and whether the later saved `.pkt` includes this experiment has not been checked by opening it.
 
 ## Reported Change and Observed Failure
 
@@ -21,8 +21,8 @@ The captured change confirms that R1 G0/0.10's helper was removed. PC1 failed to
 
 ## Confirmation Still Needed
 
-1. Capture final R1 G0/0.10 and G0/0.20 helper lines, and export sanitized configurations for R1, R2, and SW1. Save the repaired `.pkt`.
-2. Capture post-repair server pings with PC1 and PC2 titles visible, plus a current R2 `show ip dhcp binding`. The identified gateway pings already exist, though their timing relative to this repair is not shown.
+1. The supplied [R1](../configs/R1-running-config.txt), [R2](../configs/R2-running-config.txt), and [SW1](../configs/SW1-running-config.txt) configs show the final helper, pool, and VLAN settings. The [later saved `.pkt`](../dhcp-relay-final.pkt) is uploaded; open it in Packet Tracer to confirm it contains these settings.
+2. The [new PC2 server ping](../images/pc2-to-server-ping.png) shows its title and 4/4 replies. The [new PC1 ping crop](../images/pc1-to-server-ping-unattributed.png) has 4/4 replies but no PC title. Capture one with PC1 title visible, plus a current R2 `show ip dhcp binding` if a contemporaneous post-repair binding is needed. The existing binding and gateway ping captures have no proved timing relative to this repair.
 3. Record how the fresh PC1 request was forced and the exact test order if known. Do not invent those details from screenshots.
 
 ## Prevention and Faster Check
