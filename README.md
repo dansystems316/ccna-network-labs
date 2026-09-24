@@ -9,6 +9,7 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 - Building segmented networks with VLANs, trunks, and inter-VLAN routing
 - Establishing and validating IPv4 and IPv6 connectivity
 - Configuring OSPF, EtherChannel, STP, ACLs, NAT/PAT, and Layer 2 security
+- Isolating DHCP address failures across routed VLANs
 - Using Cisco IOS evidence to prove expected behavior
 - Diagnosing faults from symptoms instead of making random configuration changes
 - Recording root cause, corrective action, and post-fix validation
@@ -25,7 +26,8 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 | Lab | Skills shown | Evidence status |
 |---|---|---|
 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
-| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | Documentation ready; artifacts pending |
+| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; Packet Tracer file and verification/fault images included; running configurations pending |
+| [DHCP relay troubleshooting](dhcp-relay/) | Client address failure, relay placement, server pools, return path | Documentation ready; Packet Tracer file and actual evidence pending |
 | [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
 | [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |
 | [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
@@ -60,6 +62,7 @@ ccna-network-labs/
 ├── PORTFOLIO_CHECKLIST.md
 ├── vlan-intervlan-routing/
 ├── ospf/
+├── dhcp-relay/
 ├── spanning-tree/
 ├── etherchannel/
 ├── acl/
