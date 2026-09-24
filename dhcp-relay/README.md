@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and twenty-four distinct screenshots are present. Both clients show DHCP leases and identified gateway pings. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. Final sanitized device exports, a repaired `.pkt`, and identified post-repair server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and twenty-five distinct screenshots are present. Both clients show DHCP leases and identified gateway pings. A router CLI successfully pings both client addresses, though its device identity is not visible. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. Final sanitized device exports, a repaired `.pkt`, and identified post-repair PC-to-server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -92,6 +92,7 @@ ip dhcp pool ADMINPOOL
 | [VLAN 10 gateway ping](images/vlan10-gateway-ping.png) | `ping 192.168.10.1` returns 4/4 replies, 0% loss. Uploaded as PC1 evidence, but the crop does not show the PC identity. |
 | [Identified PC2 gateway ping](images/pc2-gateway-ping-identified.png) | PC2 title visible; `ping 192.168.20.1` returns 4/4 replies, 0% loss. Timing relative to the helper fault is not established. |
 | [Identified PC1 gateway ping](images/pc1-gateway-ping-identified.png) | PC1 title visible; `ping 192.168.10.1` returns 4/4 replies, 0% loss. Timing relative to the helper fault is not established. |
+| [Router to both clients](images/router-to-both-clients-ping.png) | `Router#` pings `192.168.10.21` and `192.168.20.21`, both 5/5. The router's device name is not visible, and these are router-to-PC tests rather than PC-to-server tests. |
 
 The R1 helper screenshot shows the Packet Tracer device name `Router0`; other CLI screenshots have generic `Router#` and `Switch#` prompts. Export named device configurations to establish attribution unambiguously. The extra helper on parent G0/0 has no interface IPv4 address in the captured configuration; the client VLAN relay points are G0/0.10 and G0/0.20. For a cleaner final configuration, remove the unnecessary parent helper with `interface GigabitEthernet0/0` then `no ip helper-address 10.0.12.2`, and verify both subinterface helpers remain. The older pool counters and config should not be treated as current after the two client lease captures. These images are baseline diagnostics, not before/after fault proof.
 
@@ -158,6 +159,7 @@ dhcp-relay/
     ├── vlan10-gateway-ping.png        # supplied; PC identity not visible
     ├── pc2-gateway-ping-identified.png # supplied; PC2 title visible
     ├── pc1-gateway-ping-identified.png # supplied; PC1 title visible
+    ├── router-to-both-clients-ping.png # supplied; router identity not visible
     ├── fault-remove-helper.png       # supplied; subinterface not visible
     ├── fault-remove-vlan10-helper.png # supplied; G0/0.10 visible
     ├── fault-client-apipa.png         # supplied; client title not visible
@@ -167,4 +169,4 @@ dhcp-relay/
     └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The `.pkt` and twenty-four distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and twenty-five distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
