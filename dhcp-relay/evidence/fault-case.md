@@ -12,6 +12,7 @@ A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0
 | Failed test | [APIPA result](../images/fault-client-apipa.png) | DHCP failed; FastEthernet0 has `169.254.87.151/16`, gateway `0.0.0.0` | The crop does not show the PC title or how a fresh request was forced. |
 | Repair | [Restore helper](../images/repair-restore-helper.png) | `R1(config-subif)#ip helper-address 10.0.12.2` | The crop does not identify the subinterface. |
 | Retest | [Restored lease](../images/repair-client-lease.png) | DHCP request successful; `192.168.10.21/24`, gateway `192.168.10.1`, DNS `1.1.1.1` | The crop does not show the PC title or post-repair pings. |
+| Identified PC1 lease | [PC1 title and successful request](../images/repair-pc1-identified-lease.png) | PC1 window shows DHCP successful with `192.168.10.21/24`, gateway `192.168.10.1` | This identifies a successful PC1 lease, but its timing relative to the cropped failure cannot be proved from the images alone. |
 
 ## Working Hypothesis
 
@@ -21,5 +22,5 @@ Removing the helper from R1's VLAN 10 client gateway would prevent a broadcast D
 
 1. Capture `show running-config interface GigabitEthernet0/0.10` during the fault and after repair, including a visible Router0 identity. Preserve G0/0.20 helper state as the control.
 2. Capture PC1's title and a forced fresh DHCP request during the fault, plus PC2's successful lease at the same stage. Note whether DHCP was renewed by toggling Static then DHCP or another method.
-3. Capture post-repair PC1 `ipconfig /all`, gateway and server pings, and R2 `show ip dhcp binding`; export final sanitized configs for all three devices and save the repaired `.pkt`.
+3. Capture post-repair PC1 gateway and server pings with its title visible, and a current R2 `show ip dhcp binding`; export final sanitized configs for all three devices and save the repaired `.pkt`.
 4. Add the confirmed root cause, exact test order, and prevention note here after checking those observations. Never relabel the initial working baseline as post-fix proof.
