@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and nineteen distinct screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by server bindings. A submitted helper removal, APIPA failure, helper restoration, and recovered lease form a partial fault case. Cropped images do not establish the exact subinterface, failed client identity, or unaffected VLAN control. Final device exports and post-repair reachability remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and twenty distinct screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by server bindings. A submitted helper removal, APIPA failure, helper restoration, and recovered lease form a partial fault case. A later screenshot visibly identifies PC1 with a successful lease; the cropped failure still does not identify the PC or exact subinterface, and the unaffected VLAN control is missing. Final device exports and post-repair reachability remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -157,7 +157,8 @@ dhcp-relay/
     ├── fault-remove-helper.png       # supplied; subinterface not visible
     ├── fault-client-apipa.png         # supplied; client title not visible
     ├── repair-restore-helper.png      # supplied; subinterface not visible
-    └── repair-client-lease.png        # supplied; client title not visible
+    ├── repair-client-lease.png        # supplied; client title not visible
+    └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The `.pkt` and nineteen distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and twenty distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
