@@ -11,7 +11,7 @@ Status definitions:
 |---:|---|---|---|---|
 | 1 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | Core switching and gateway support | In progress | Add text configs, trunk output, and captured PC1-to-PC2 ping; `.pkt`, topology, VLAN/router state, and access-VLAN fault evidence are included |
 | 2 | [OSPF single area](ospf/) | Junior routing and escalation work | In progress | Add text running configurations; `.pkt`, topology and neighbor/route/ping/fault images are present |
-| 3 | [DHCP relay troubleshooting](dhcp-relay/) | Common junior support address-assignment ticket | In progress | Original and later saved `.pkt` files, baseline evidence, R1/R2/SW1 configs, identified gateway pings, router-to-both-clients pings, and G0/0.10 fault with PC1 failure/PC2 control and PC1 recovery present; identified PC1/PC2 server pings present; verify later `.pkt` contents against config exports |
+| 3 | [DHCP relay troubleshooting](dhcp-relay/) | Common junior support address-assignment ticket | Complete | Final `.pkt` retested after reopening by owner; three running configs, VLAN/trunk and lease evidence, identified client pings, and VLAN 10 helper failure/repair with unaffected VLAN 20 control |
 | 4 | [Spanning Tree](spanning-tree/) | Loop prevention and switch troubleshooting | Planned | Three-switch redundant topology, root/port-role output, link-failure reconvergence |
 | 5 | [EtherChannel](etherchannel/) | Uplink resiliency and bandwidth | Planned | LACP bundle, member-state output, deliberate mismatch and repair |
 | 6 | [ACLs](acl/) | Network access policy and troubleshooting | Planned | Written policy matrix, configs, permit/deny tests, hit counters |
