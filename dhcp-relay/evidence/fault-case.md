@@ -8,7 +8,7 @@ A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0
 
 | Step | Submitted evidence | Direct observation | Limit |
 |---|---|---|---|
-| Change | [Remove helper](../images/fault-remove-helper.png) | `R1(config-subif)#no ip helper-address 10.0.12.2` | The crop does not identify the subinterface. |
+| Change | [VLAN 10 helper removal](../images/fault-remove-vlan10-helper.png) | `R1(config)#int g0/0.10` followed by `R1(config-subif)#no ip helper-address 10.0.12.2` | Command and target interface are visible; a separate earlier crop shows the same removal command without interface context. |
 | Failed test | [APIPA result](../images/fault-client-apipa.png) | DHCP failed; FastEthernet0 has `169.254.87.151/16`, gateway `0.0.0.0` | The crop does not show the PC title or how a fresh request was forced. |
 | Repair | [Restore helper](../images/repair-restore-helper.png) | `R1(config-subif)#ip helper-address 10.0.12.2` | The crop does not identify the subinterface. |
 | Retest | [Restored lease](../images/repair-client-lease.png) | DHCP request successful; `192.168.10.21/24`, gateway `192.168.10.1`, DNS `1.1.1.1` | The crop does not show the PC title or post-repair pings. |
@@ -16,7 +16,7 @@ A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0
 
 ## Working Hypothesis
 
-Removing the helper from R1's VLAN 10 client gateway would prevent a broadcast DHCP request from reaching R2. The command, failure, restored command, and successful lease are consistent with that explanation. The submitted crops alone do not conclusively establish that G0/0.10 was the interface changed or that PC2 continued working during the fault. Keep this as a supported hypothesis until the device/interface and scope are captured in the same incident record.
+The captured change confirms that R1 G0/0.10's helper was removed. Without a relay, a new DHCP broadcast on VLAN 10 cannot reach R2 across the routed link. The submitted APIPA result and restored lease are consistent with that cause. The failed-client image still lacks a PC title, and PC2's state during the fault is absent, so the exact observed scope remains qualified.
 
 ## Confirmation Still Needed
 
