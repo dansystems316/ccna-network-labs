@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and nine screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by the server binding table. Relay helper placement, server return routes, end-to-end reachability, saved configurations, and a documented failure/repair remain unproven. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and ten screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by the server binding table. R1 has helpers on both client VLAN subinterfaces. Server return routes, end-to-end reachability, saved configurations, and a documented failure/repair remain unproven. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -79,13 +79,14 @@ ip dhcp pool ADMINPOOL
 | [SW1 VLANs](images/sw1-vlans.png) | VLAN 10 `USERS` on Fa0/1; VLAN 20 `ADMIN` on Fa0/2 |
 | [SW1 trunk](images/sw1-trunk.png) | G0/1 is trunking, with VLANs 10 and 20 allowed, active, and forwarding |
 | [R1 interfaces](images/r1-interfaces.png) | G0/0.10 `.10.1`, G0/0.20 `.20.1`, and G0/1 `10.0.12.1` are up/up |
+| [R1 helper configuration](images/r1-helper-config.png) | `ip helper-address 10.0.12.2` appears on both G0/0.10 and G0/0.20; also present on unnumbered parent G0/0 |
 | [R2 DHCP configuration](images/r2-dhcp-config.png) | USERSPOOL includes its gateway; ADMINPOOL lacks a `default-router` line |
 | [R2 pool counters](images/r2-dhcp-pools.png) | ADMINPOOL shows 1 leased address; USERSPOOL shows 0 at capture time. Counters do not identify a client or prove a usable lease. |
 | [PC1 DHCP lease](images/pc1-lease.png) | FastEthernet0 `192.168.10.21/24`, gateway `192.168.10.1`, DHCP server `10.0.12.2` |
 | [PC2 DHCP lease](images/pc2-lease.png) | FastEthernet0 `192.168.20.21/24`, gateway `192.168.20.1`, DHCP server `10.0.12.2` |
 | [R2 DHCP bindings](images/r2-dhcp-bindings.png) | `192.168.10.21` maps to PC1 MAC `00E0.8F10.5797`; `192.168.20.21` maps to PC2 MAC `0001.43D1.67BD`; both automatic |
 
-The CLI screenshots have generic `Router#` and `Switch#` prompts, so device attribution comes from the command content and the supplied context. Export named device configurations to establish it unambiguously. The older pool counters and config should not be treated as current after the two client lease captures. These images are baseline diagnostics, not before/after fault proof.
+The R1 helper screenshot shows the Packet Tracer device name `Router0`; other CLI screenshots have generic `Router#` and `Switch#` prompts. Export named device configurations to establish attribution unambiguously. The extra helper on parent G0/0 has no interface IPv4 address in the captured configuration; the client VLAN relay points are G0/0.10 and G0/0.20. For a cleaner final configuration, remove the unnecessary parent helper with `interface GigabitEthernet0/0` then `no ip helper-address 10.0.12.2`, and verify both subinterface helpers remain. The older pool counters and config should not be treated as current after the two client lease captures. These images are baseline diagnostics, not before/after fault proof.
 
 Run the exact commands supported by the chosen Packet Tracer IOS image. Save copied text in `evidence/` with headings identifying the device, test stage, and command; use screenshots only as supporting evidence. On PCs, use Desktop > IP Configuration to request or renew DHCP, and Command Prompt for the commands below. Packet Tracer's PC CLI may not support every desktop Windows `ipconfig` switch; toggling Static then DHCP in IP Configuration can force a fresh request.
 
@@ -137,6 +138,7 @@ dhcp-relay/
     ├── topology.png                  # supplied
     ├── sw1-vlans.png, sw1-trunk.png  # supplied
     ├── r1-interfaces.png             # supplied
+    ├── r1-helper-config.png          # supplied
     ├── r2-dhcp-config.png, r2-dhcp-pools.png # supplied
     ├── pc1-lease.png, pc2-lease.png   # supplied
     ├── r2-dhcp-bindings.png           # supplied
@@ -144,4 +146,4 @@ dhcp-relay/
     └── pc1-after.png
 ```
 
-The `.pkt` and nine screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, verified `.pkt`, sanitized device configurations, actual client and routing verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and ten screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, verified `.pkt`, sanitized device configurations, actual client and routing verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
