@@ -1,8 +1,8 @@
-# DHCP Relay Fault Case — Evidence in Progress
+# DHCP Relay Fault Case — Recorded Evidence
 
 ## Ticket and Expected State
 
-A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0.12.2`) through R1 G0/0.10 and use gateway `192.168.10.1`. The earlier [client lease](../images/pc1-lease.png), [R1 helper configuration](../images/r1-helper-config.png), and [server bindings](../images/r2-dhcp-bindings.png) show a working baseline before the submitted fault screenshots. Exact capture times and whether the later saved `.pkt` includes this experiment has not been checked by opening it.
+A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0.12.2`) through R1 G0/0.10 and use gateway `192.168.10.1`. The earlier [client lease](../images/pc1-lease.png), [R1 helper configuration](../images/r1-helper-config.png), and [server bindings](../images/r2-dhcp-bindings.png) show a working baseline before the submitted fault screenshots. Exact screenshot capture times are not recorded. The owner reports reopening the final `.pkt` and verifying both client leases and server pings; the historical fault injection was documented separately in screenshots.
 
 ## Reported Change and Observed Failure
 
@@ -19,9 +19,9 @@ A client on VLAN 10 should receive a `192.168.10.0/24` DHCP lease from R2 (`10.0
 
 The captured change confirms that R1 G0/0.10's helper was removed. PC1 failed to get a lease while PC2 on VLAN 20 continued to receive one. The VLAN 10 DHCP broadcasts could not reach the remote server without the relay on the client-facing subinterface. The separate APIPA crop records one fallback result but lacks a PC title; use the side-by-side image for client attribution. After the helper was restored, an identified PC1 screenshot shows a valid lease. The submitted images establish the fault, scope, and recovery sequence, though the exact request method and capture times are not recorded.
 
-## Confirmation Still Needed
+## Verification and Evidence Limits
 
-1. The supplied [R1](../configs/R1-running-config.txt), [R2](../configs/R2-running-config.txt), and [SW1](../configs/SW1-running-config.txt) configs show the final helper, pool, and VLAN settings. The [later saved `.pkt`](../dhcp-relay-final.pkt) is uploaded; open it in Packet Tracer to confirm it contains these settings.
+1. The supplied [R1](../configs/R1-running-config.txt), [R2](../configs/R2-running-config.txt), and [SW1](../configs/SW1-running-config.txt) configs show the final helper, pool, and VLAN settings. The [final `.pkt`](../dhcp-relay-final.pkt) is uploaded; the owner reports reopening it and confirming both clients get the expected leases and ping `10.0.12.2`. This workspace has not run Packet Tracer.
 2. The [identified PC1 server ping](../images/pc1-to-server-ping-identified.png) and [identified PC2 server ping](../images/pc2-to-server-ping.png) each show their title and 4/4 replies. Their exact timing relative to the helper restoration is not visible; the earlier [PC1 ping crop](../images/pc1-to-server-ping-unattributed.png) lacked its title. Capture a current R2 `show ip dhcp binding` if a contemporaneous post-repair binding is needed. The existing binding and gateway ping captures have no proved timing relative to this repair.
 3. Record how the fresh PC1 request was forced and the exact test order if known. Do not invent those details from screenshots.
 
