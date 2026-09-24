@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The original and later saved Packet Tracer projects, twenty-eight distinct screenshots, and [SW1](configs/SW1-running-config.txt), sanitized [R1 relay](configs/R1-running-config.txt), and sanitized [R2 DHCP server](configs/R2-running-config.txt) running configs are present. Both clients show DHCP leases and identified gateway pings. A router CLI successfully pings both client addresses, though its device identity is not visible. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. The later `.pkt` is uploaded but has not been opened here to verify its saved state. Both new PC-to-server pings are attributable and return 4/4 replies. Their capture times relative to the repair are not visible. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: Complete (user verified in Packet Tracer).** The original and final saved `.pkt`, three device running configurations, topology, VLAN and trunk checks, client leases, gateway and server pings, and the controlled VLAN 10 relay failure and repair are documented. The owner reports reopening `dhcp relay final.pkt` and confirming both clients still received the expected leases and could ping `10.0.12.2`. This saved-file check is owner reported; this workspace does not run Packet Tracer. Exact screenshot capture times and the method used to force the failed DHCP request were not recorded.
 
 ## Support Ticket and Objective
 
@@ -118,7 +118,7 @@ Some Packet Tracer router images omit `show ip dhcp pool` or filtered running-co
 
 ## Fault Injection and Troubleshooting Record
 
-The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, PC1's DHCP failure beside PC2's working lease, an APIPA result, restoration command, and recovered PC1 lease. It identifies the faulted VLAN and unaffected VLAN control. The three configs and later saved `.pkt` are now supplied. Confirm the saved `.pkt` contents and reconcile its state with the submitted configs before marking the lab complete.
+The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, PC1's DHCP failure beside PC2's working lease, an APIPA result, restoration command, and recovered PC1 lease. It identifies the faulted VLAN and unaffected VLAN control. The three configs and final saved `.pkt` are supplied. The owner reports reopening that file and confirming both clients received the expected leases and reached the DHCP server.
 
 First save proof of the working baseline. Then remove only `ip helper-address 10.0.12.2` from **R1 G0/0.10** with `no ip helper-address 10.0.12.2`. Renew PC1 and capture the failed DHCP request in `evidence/pc1-before.txt` or `images/pc1-before.png`; keep PC2 working as a scope control. An old lease can hide the fault, so force a new request and note how it was done. The exact failure message or fallback address must come from the lab.
 
@@ -138,7 +138,7 @@ dhcp-relay/
 ├── README.md
 ├── packet-tracer/
 │   └── dhcp-relay.pkt                 # original supplied
-├── dhcp-relay-final.pkt              # later saved upload; contents not opened here
+├── dhcp-relay-final.pkt              # owner reports reopening and retesting
 ├── configs/
 │   ├── R1-running-config.txt         # supplied; serial redacted
 │   ├── R2-running-config.txt         # supplied; serial redacted
@@ -176,4 +176,4 @@ dhcp-relay/
     └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The original and later saved `.pkt` files, twenty-eight distinct screenshots, and [R1](configs/R1-running-config.txt), [R2](configs/R2-running-config.txt), and [SW1](configs/SW1-running-config.txt) configurations are present. Other filenames above are targets, not completed evidence. The later `.pkt` has not been independently opened, and the earlier PC1-to-server crop lacks a title, but a new identified PC1 ping is included. A complete lab needs a reconciled addressing plan, a verified final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The original and final `.pkt` files, twenty-eight distinct screenshots, and [R1](configs/R1-running-config.txt), [R2](configs/R2-running-config.txt), and [SW1](configs/SW1-running-config.txt) configurations are present. The owner reports reopening the final project and confirming both clients obtain the expected leases and ping the server. Other filenames above are suggested optional text evidence, not completed files. The failure, unaffected VLAN control, helper restoration, recovered lease, and identified endpoint pings satisfy the [portfolio checklist](../PORTFOLIO_CHECKLIST.md). Screenshot times and the exact DHCP request method remain undocumented; do not infer either from the images.
