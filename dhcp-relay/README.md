@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and twenty-five distinct screenshots are present. Both clients show DHCP leases and identified gateway pings. A router CLI successfully pings both client addresses, though its device identity is not visible. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. Final sanitized device exports, a repaired `.pkt`, and identified post-repair PC-to-server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project, twenty-five distinct screenshots, and a sanitized [R2 DHCP server running config](configs/R2-running-config.txt) are present. Both clients show DHCP leases and identified gateway pings. A router CLI successfully pings both client addresses, though its device identity is not visible. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. R1 and SW1 running configs, a repaired `.pkt`, and identified post-repair PC-to-server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -169,4 +169,4 @@ dhcp-relay/
     └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The `.pkt` and twenty-five distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The original `.pkt`, twenty-five distinct screenshots, and [R2 configuration](configs/R2-running-config.txt) are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
