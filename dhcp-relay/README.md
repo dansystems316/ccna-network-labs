@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project, twenty-five distinct screenshots, and [SW1](configs/SW1-running-config.txt), sanitized [R1 relay](configs/R1-running-config.txt), and sanitized [R2 DHCP server](configs/R2-running-config.txt) running configs are present. Both clients show DHCP leases and identified gateway pings. A router CLI successfully pings both client addresses, though its device identity is not visible. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. A repaired `.pkt` and identified post-repair PC-to-server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The original and later saved Packet Tracer projects, twenty-seven distinct screenshots, and [SW1](configs/SW1-running-config.txt), sanitized [R1 relay](configs/R1-running-config.txt), and sanitized [R2 DHCP server](configs/R2-running-config.txt) running configs are present. Both clients show DHCP leases and identified gateway pings. A router CLI successfully pings both client addresses, though its device identity is not visible. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. The later `.pkt` is uploaded but has not been opened here to verify its saved state. The new PC2-to-server ping is attributable; the supplied PC1-to-server ping is cropped without its PC title, so an identified PC1 capture remains pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -15,7 +15,7 @@ PC2 (VLAN 20) -- SW1 -- same trunk -- R1
 
 ![Packet Tracer layout: PC1 and PC2 through Switch0 and Router0 to Router1](images/topology.png)
 
-The [supplied Packet Tracer project](packet-tracer/dhcp-relay.pkt) contains a visible two-PC, 2960 Switch0, 2911 Router0, and 2911 Router1 layout. Screenshots identify Router0 as R1 and show R1 G0/0.10 `192.168.10.1`, G0/0.20 `192.168.20.1`, and G0/1 `10.0.12.1`, all up/up. The screenshots do not show Router1's interface address or which PC connects to each access port; verify these against the project before treating the rest of the table as observed state.
+The [original Packet Tracer project](packet-tracer/dhcp-relay.pkt) and [later uploaded project](dhcp-relay-final.pkt) are available. The original project contains a visible two-PC, 2960 Switch0, 2911 Router0, and 2911 Router1 layout. Screenshots identify Router0 as R1 and show R1 G0/0.10 `192.168.10.1`, G0/0.20 `192.168.20.1`, and G0/1 `10.0.12.1`, all up/up. The [R2 configuration](configs/R2-running-config.txt) shows `10.0.12.2/30` on G0/0 and the [SW1 configuration](configs/SW1-running-config.txt) shows Fa0/1 in VLAN 10, Fa0/2 in VLAN 20, and G0/1 as trunk. The switch and PC names in the topology and screenshots support the client mapping; the saved Packet Tracer project has not been opened here to independently check cabling.
 
 | Device | Interface / VLAN | Address or expected lease | Gateway / purpose |
 |---|---|---|---|
@@ -92,6 +92,8 @@ ip dhcp pool ADMINPOOL
 | [VLAN 10 gateway ping](images/vlan10-gateway-ping.png) | `ping 192.168.10.1` returns 4/4 replies, 0% loss. Uploaded as PC1 evidence, but the crop does not show the PC identity. |
 | [Identified PC2 gateway ping](images/pc2-gateway-ping-identified.png) | PC2 title visible; `ping 192.168.20.1` returns 4/4 replies, 0% loss. Timing relative to the helper fault is not established. |
 | [Identified PC1 gateway ping](images/pc1-gateway-ping-identified.png) | PC1 title visible; `ping 192.168.10.1` returns 4/4 replies, 0% loss. Timing relative to the helper fault is not established. |
+| [Uploaded PC1-to-server ping, title cropped](images/pc1-to-server-ping-unattributed.png) | `ping 10.0.12.2` returns 4/4 replies, 0% loss. Filename says PC1 but screenshot does not display a client title; attribution and timing relative to repair are unconfirmed. |
+| [Identified PC2-to-server ping](images/pc2-to-server-ping.png) | PC2 title visible; `ping 10.0.12.2` returns 4/4 replies, 0% loss. Timing relative to repair is not visible. |
 | [Router to both clients](images/router-to-both-clients-ping.png) | `Router#` pings `192.168.10.21` and `192.168.20.21`, both 5/5. The router's device name is not visible, and these are router-to-PC tests rather than PC-to-server tests. |
 
 The R1 helper screenshot shows the Packet Tracer device name `Router0`; other CLI screenshots have generic `Router#` and `Switch#` prompts. The [R1 running config](configs/R1-running-config.txt) confirms the relay interface assignments; the [SW1 running config](configs/SW1-running-config.txt) confirms the access port and trunk configuration. VLAN names and active state are shown in the separate `show vlan brief` screenshot. The extra helper on parent G0/0 has no interface IPv4 address in the captured configuration; the client VLAN relay points are G0/0.10 and G0/0.20. For a cleaner final configuration, remove the unnecessary parent helper with `interface GigabitEthernet0/0` then `no ip helper-address 10.0.12.2`, and verify both subinterface helpers remain. The older pool counters and config should not be treated as current after the two client lease captures. These images are baseline diagnostics, not before/after fault proof.
@@ -115,7 +117,7 @@ Some Packet Tracer router images omit `show ip dhcp pool` or filtered running-co
 
 ## Fault Injection and Troubleshooting Record
 
-The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, PC1's DHCP failure beside PC2's working lease, an APIPA result, restoration command, and recovered PC1 lease. It identifies the faulted VLAN and unaffected VLAN control. Finish the final config exports and post-repair tests below before marking the lab complete.
+The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, PC1's DHCP failure beside PC2's working lease, an APIPA result, restoration command, and recovered PC1 lease. It identifies the faulted VLAN and unaffected VLAN control. The three configs and later saved `.pkt` are now supplied. Confirm the `.pkt` contents and capture an identified PC1-to-server ping before marking the lab complete.
 
 First save proof of the working baseline. Then remove only `ip helper-address 10.0.12.2` from **R1 G0/0.10** with `no ip helper-address 10.0.12.2`. Renew PC1 and capture the failed DHCP request in `evidence/pc1-before.txt` or `images/pc1-before.png`; keep PC2 working as a scope control. An old lease can hide the fault, so force a new request and note how it was done. The exact failure message or fallback address must come from the lab.
 
@@ -134,11 +136,12 @@ Follow the [repository troubleshooting workflow](../troubleshooting/README.md): 
 dhcp-relay/
 ├── README.md
 ├── packet-tracer/
-│   └── dhcp-relay.pkt                 # supplied; behavior still to verify
+│   └── dhcp-relay.pkt                 # original supplied
+├── dhcp-relay-final.pkt              # later saved upload; contents not opened here
 ├── configs/
-│   ├── R1-running-config.txt         # add after export
-│   ├── R2-running-config.txt
-│   └── SW1-running-config.txt
+│   ├── R1-running-config.txt         # supplied; serial redacted
+│   ├── R2-running-config.txt         # supplied; serial redacted
+│   └── SW1-running-config.txt        # supplied
 ├── evidence/
 │   ├── baseline.txt                  # actual IOS/PC output
 │   ├── pc1-before.txt
@@ -155,7 +158,9 @@ dhcp-relay/
     ├── r2-return-routes-installed.png # supplied
     ├── pc1-lease.png, pc2-lease.png   # supplied
     ├── r2-dhcp-bindings.png           # supplied
-    ├── pc2-to-server-ping.png         # supplied; PC identity not visible
+    ├── pc2-to-server-ping.png         # older crop; PC identity not visible
+    ├── pc1-to-server-ping-unattributed.png # new crop; PC identity not visible
+    ├── pc2-to-server-ping.png         # new; PC2 title visible
     ├── vlan10-gateway-ping.png        # supplied; PC identity not visible
     ├── pc2-gateway-ping-identified.png # supplied; PC2 title visible
     ├── pc1-gateway-ping-identified.png # supplied; PC1 title visible
@@ -169,4 +174,4 @@ dhcp-relay/
     └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The original `.pkt`, twenty-five distinct screenshots, and [R1](configs/R1-running-config.txt), [R2](configs/R2-running-config.txt), and [SW1](configs/SW1-running-config.txt) configurations are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The original and later saved `.pkt` files, twenty-seven distinct screenshots, and [R1](configs/R1-running-config.txt), [R2](configs/R2-running-config.txt), and [SW1](configs/SW1-running-config.txt) configurations are present. Other filenames above are targets, not completed evidence. The later `.pkt` has not been independently opened, and the new PC1-to-server ping lacks a device title. A complete lab needs a reconciled addressing plan, a verified final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
