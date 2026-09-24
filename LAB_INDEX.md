@@ -11,7 +11,7 @@ Status definitions:
 |---:|---|---|---|---|
 | 1 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | Core switching and gateway support | In progress | Add text configs, trunk output, and captured PC1-to-PC2 ping; `.pkt`, topology, VLAN/router state, and access-VLAN fault evidence are included |
 | 2 | [OSPF single area](ospf/) | Junior routing and escalation work | In progress | Add text running configurations; `.pkt`, topology and neighbor/route/ping/fault images are present |
-| 3 | [DHCP relay troubleshooting](dhcp-relay/) | Common junior support address-assignment ticket | In progress | `.pkt`, topology, VLAN/trunk, R1 helpers, both client leases, matching server bindings, newer pool config and one cropped server ping present; capture server routes, attributed gateway/server pings from both PCs, saved configs and genuine fault/repair proof |
+| 3 | [DHCP relay troubleshooting](dhcp-relay/) | Common junior support address-assignment ticket | In progress | `.pkt`, topology, VLAN/trunk, R1 helpers, both client leases, matching server bindings, current pool config, installed return routes and one cropped server ping present; capture attributed gateway/server pings from both PCs, saved configs and genuine fault/repair proof |
 | 4 | [Spanning Tree](spanning-tree/) | Loop prevention and switch troubleshooting | Planned | Three-switch redundant topology, root/port-role output, link-failure reconvergence |
 | 5 | [EtherChannel](etherchannel/) | Uplink resiliency and bandwidth | Planned | LACP bundle, member-state output, deliberate mismatch and repair |
 | 6 | [ACLs](acl/) | Network access policy and troubleshooting | Planned | Written policy matrix, configs, permit/deny tests, hit counters |
