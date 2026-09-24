@@ -47,7 +47,7 @@ Use ping, traceroute, ARP/neighbor tables, and device state to identify the firs
 |---|---|---|---|---|
 | Pending | VLAN | Host cannot reach its gateway | To be confirmed in a real lab | Before/after output pending |
 | Pending | OSPF | Neighbor table is empty | To be confirmed in a real lab | Before/after output pending |
-| [In progress](../dhcp-relay/evidence/fault-case.md) | DHCP relay | VLAN 10 client request gets APIPA during helper-removal experiment | Missing helper is consistent with screenshots; exact subinterface and client attribution pending | Command and client before/after images present; control and final proof pending |
+| [In progress](../dhcp-relay/evidence/fault-case.md) | DHCP relay | Client request gets APIPA during G0/0.10 helper-removal experiment | G0/0.10 helper removal confirmed; failed client identity and concurrent scope pending | Command and client before/after images present; control and final proof pending |
 | Pending | NAT/PAT | No translations appear | To be confirmed in a real lab | Before/after output pending |
 
 Replace each pending row with an actual case after reproducing and fixing the fault. Good candidates from hands-on practice include a wrong access VLAN, trunk allowed-VLAN omission, OSPF subnet-mask mismatch, EtherChannel inconsistency, ACL direction error, missing NAT inside/outside designation, or incorrect DHCP trust boundary.
