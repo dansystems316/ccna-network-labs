@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and twenty-three distinct screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by server bindings; PC1 and PC2 now visibly reach their own gateways. The fault case shows R1 G0/0.10's helper removal, APIPA failure, helper restoration, and a later identified PC1 successful lease. The failed-client crop still lacks a title and PC2's state during the fault is missing. Final device exports and identified server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and twenty-four distinct screenshots are present. Both clients show DHCP leases and identified gateway pings. The fault case shows helper removal from R1 G0/0.10, PC1 DHCP failure alongside PC2's working lease, helper restoration, and an identified PC1 recovered lease. Final sanitized device exports, a repaired `.pkt`, and identified post-repair server pings remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -114,7 +114,7 @@ Some Packet Tracer router images omit `show ip dhcp pool` or filtered running-co
 
 ## Fault Injection and Troubleshooting Record
 
-The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, DHCP failure and APIPA address, restoration command, and successful lease. It separates direct observations from the still-unconfirmed failed-client identity and control VLAN state. Capture the missing control and final tests below before treating the incident as fully demonstrated.
+The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, PC1's DHCP failure beside PC2's working lease, an APIPA result, restoration command, and recovered PC1 lease. It identifies the faulted VLAN and unaffected VLAN control. Finish the final config exports and post-repair tests below before marking the lab complete.
 
 First save proof of the working baseline. Then remove only `ip helper-address 10.0.12.2` from **R1 G0/0.10** with `no ip helper-address 10.0.12.2`. Renew PC1 and capture the failed DHCP request in `evidence/pc1-before.txt` or `images/pc1-before.png`; keep PC2 working as a scope control. An old lease can hide the fault, so force a new request and note how it was done. The exact failure message or fallback address must come from the lab.
 
@@ -161,9 +161,10 @@ dhcp-relay/
     ├── fault-remove-helper.png       # supplied; subinterface not visible
     ├── fault-remove-vlan10-helper.png # supplied; G0/0.10 visible
     ├── fault-client-apipa.png         # supplied; client title not visible
+    ├── fault-pc1-failed-pc2-working.png # supplied; both titles visible
     ├── repair-restore-helper.png      # supplied; subinterface not visible
     ├── repair-client-lease.png        # supplied; client title not visible
     └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The `.pkt` and twenty-three distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and twenty-four distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
