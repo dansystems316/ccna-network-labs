@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: In progress.** The Packet Tracer project and twenty distinct screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by server bindings. A submitted helper removal, APIPA failure, helper restoration, and recovered lease form a partial fault case. A later screenshot visibly identifies PC1 with a successful lease; the cropped failure still does not identify the PC or exact subinterface, and the unaffected VLAN control is missing. Final device exports and post-repair reachability remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** The Packet Tracer project and twenty-one distinct screenshots are present. Both clients show DHCP leases from `10.0.12.2` with correct VLAN gateways, corroborated by server bindings. The fault case now shows R1 G0/0.10's helper removal, APIPA failure, helper restoration, and a later identified PC1 successful lease. The failed-client crop still lacks a title and the unaffected VLAN control is missing. Final device exports and post-repair reachability remain pending. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -112,7 +112,7 @@ Some Packet Tracer router images omit `show ip dhcp pool` or filtered running-co
 
 ## Fault Injection and Troubleshooting Record
 
-The submitted [fault case](evidence/fault-case.md) records the actual removal command, DHCP failure and APIPA address, restoration command, and successful lease. It separates direct observations from the still-unconfirmed interface and client attribution. Capture the missing control and final tests below before treating the incident as fully demonstrated.
+The submitted [fault case](evidence/fault-case.md) records the G0/0.10 removal command, DHCP failure and APIPA address, restoration command, and successful lease. It separates direct observations from the still-unconfirmed failed-client identity and control VLAN state. Capture the missing control and final tests below before treating the incident as fully demonstrated.
 
 First save proof of the working baseline. Then remove only `ip helper-address 10.0.12.2` from **R1 G0/0.10** with `no ip helper-address 10.0.12.2`. Renew PC1 and capture the failed DHCP request in `evidence/pc1-before.txt` or `images/pc1-before.png`; keep PC2 working as a scope control. An old lease can hide the fault, so force a new request and note how it was done. The exact failure message or fallback address must come from the lab.
 
@@ -155,10 +155,11 @@ dhcp-relay/
     ├── pc2-to-server-ping.png         # supplied; PC identity not visible
     ├── vlan10-gateway-ping.png        # supplied; PC identity not visible
     ├── fault-remove-helper.png       # supplied; subinterface not visible
+    ├── fault-remove-vlan10-helper.png # supplied; G0/0.10 visible
     ├── fault-client-apipa.png         # supplied; client title not visible
     ├── repair-restore-helper.png      # supplied; subinterface not visible
     ├── repair-client-lease.png        # supplied; client title not visible
     └── repair-pc1-identified-lease.png # supplied; PC1 title visible
 ```
 
-The `.pkt` and twenty distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` and twenty-one distinct screenshots are present. Other filenames above are targets, not completed evidence. A complete lab needs a reconciled addressing plan, final `.pkt`, sanitized device configurations, attributable verification output, and a confirmed failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
