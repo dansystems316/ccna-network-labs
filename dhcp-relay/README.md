@@ -1,6 +1,6 @@
 # DHCP Relay Troubleshooting Lab
 
-> **Status: Documentation ready.** This is a build and evidence plan. No Packet Tracer file, device exports, topology image, or real verification output has been added yet. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
+> **Status: In progress.** A Packet Tracer project was supplied and added, but its topology, configuration, and behavior have not been independently verified. Device exports, topology image, and real before/after output are still needed. Do not call this lab complete until the repository's [evidence checklist](../PORTFOLIO_CHECKLIST.md) is satisfied.
 
 ## Support Ticket and Objective
 
@@ -13,7 +13,7 @@ PC1 (VLAN 10) -- SW1 -- 802.1Q trunk -- R1 -- 10.0.12.0/30 -- R2 (DHCP server)
 PC2 (VLAN 20) -- SW1 -- same trunk -- R1
 ```
 
-Save a labeled Packet Tracer topology screenshot to `images/topology.png` once built. Interface names below assume routers with GigabitEthernet0/0 and GigabitEthernet0/1; adjust the names to the actual Packet Tracer model and record that choice.
+The [supplied Packet Tracer project](packet-tracer/dhcp-relay.pkt) is available for inspection. The diagram and addresses below remain a target design until checked against the project. Save a labeled screenshot to `images/topology.png` and reconcile any differences. Interface names below assume routers with GigabitEthernet0/0 and GigabitEthernet0/1; adjust the names to the actual Packet Tracer model and record that choice.
 
 | Device | Interface / VLAN | Address or expected lease | Gateway / purpose |
 |---|---|---|---|
@@ -125,4 +125,4 @@ dhcp-relay/
     └── pc1-after.png
 ```
 
-Directories remain empty until actual artifacts exist; filenames above are targets, not links or completed evidence. A complete lab needs the real topology, addressing plan, `.pkt`, sanitized device configurations, actual verification output, and a documented failure with before/after proof and root cause. Update its status to **In progress** when genuine artifacts arrive and **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
+The `.pkt` file is present. Other filenames above are targets, not completed evidence. A complete lab needs the real topology, addressing plan, verified `.pkt`, sanitized device configurations, actual verification output, and a documented failure with before/after proof and root cause. Update its status to **Complete** only when all criteria in [the portfolio checklist](../PORTFOLIO_CHECKLIST.md) are met.
