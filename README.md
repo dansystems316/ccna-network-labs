@@ -29,7 +29,7 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 | [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; Packet Tracer file and verification/fault images included; running configurations pending |
 | [DHCP relay troubleshooting](dhcp-relay/) | Client address failure, relay placement, server pools, return path | Complete; final Packet Tracer file, configs, client tests, and failure/repair evidence |
 | [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
-| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | Planned lab; artifacts pending |
+| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | In progress; live mismatch and repair documented; final artifacts pending |
 | [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
 | [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
 | [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
