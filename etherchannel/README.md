@@ -1,5 +1,7 @@
 # EtherChannel / LACP troubleshooting
 
+This is a separate Fa0/2–Fa0/3 troubleshooting exercise. The [completed Fa0/1–Fa0/2 failover lab](etherchannel-lacp/README.md) has its own Packet Tracer file and ping evidence.
+
 ## Goal
 
 Bundle two links between Cisco 2960 switches using LACP. CDP identified Fa0/2 ↔ Fa0/2 and Fa0/3 ↔ Fa0/3. The trunk carries VLAN 10 with native VLAN 99.
@@ -16,6 +18,16 @@ Both ends were set to trunk mode with native VLAN 99, allowed VLAN 10, and LACP 
 
 `SU` means the Layer 2 channel is in use; `P` means a physical port is bundled. VLAN 99 was also created on both switches, but that change alone did not resolve Fa0/3's state.
 
+## VLAN mismatch: captured fault and repair
+
+For a controlled fault, Fa0/3's allowed VLAN was changed from 10 to 20 on one switch. The switch reported `%EC-5-CANNOT_BUNDLE2` with `vlan mask is different`, and Fa0/3 became suspended while Fa0/2 kept Po1 in use. Restoring `switchport trunk allowed vlan 10` brought Fa0/3 back into the bundle.
+
+| Evidence | What it shows |
+|---|---|
+| [VLAN mismatch and suspended member](images/vlan-mismatch-suspended.png) | The command, error, and `Po1(SU) Fa0/2(P) Fa0/3(s)` |
+| [Switch1 repair](images/switch1-vlan-mismatch-fixed.png) | Restoring VLAN 10 and `Fa0/2(P) Fa0/3(P)` |
+| [Switch0 working summary](images/switch0-both-members.png) | Both members bundled on Switch0 |
+
 ## Verification
 
 ```text
@@ -24,11 +36,6 @@ show etherchannel summary
 show interfaces trunk
 ```
 
-## Evidence still needed
+## To finish this exercise
 
-1. One labeled topology screenshot showing the two inter-switch links.
-2. A clear `show etherchannel summary` screenshot from **each** switch showing `Po1(SU)` and both ports `(P)`.
-3. One screenshot of the actual mismatch error or pre-fix `Po1(SD)`/`(I)`/`(s)` output.
-4. If demonstrating resilience, one screenshot showing a member down and Po1 still up, plus a successful PC-to-PC ping during that failure.
-
-Save the final Packet Tracer `.pkt` file as well. Add text configs for the member ports on both switches before marking this lab complete.
+Add the final Packet Tracer `.pkt` file, a labeled topology image, and text configs for the member ports on both switches. The separate [failover lab](etherchannel-lacp/README.md) already documents a one-link failure and PC-to-PC pings; this exercise focuses on VLAN mismatch diagnosis.
