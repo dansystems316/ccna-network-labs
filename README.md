@@ -2,7 +2,7 @@
 
 Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
 
-> **Current status:** The repository contains documented lab foundations. Packet Tracer files, topology screenshots, saved configurations, and real verification output are being added before individual labs are marked complete.
+> **Current status:** DHCP relay includes the full evidence set. VLAN routing, OSPF, STP, EtherChannel, and ACL troubleshooting include Packet Tracer projects and verification evidence; remaining exports and checks are tracked in the lab index.
 
 ## What This Portfolio Demonstrates
 
@@ -26,11 +26,11 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 | Lab | Skills shown | Evidence status |
 |---|---|---|
 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
-| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; Packet Tracer file and verification/fault images included; running configurations pending |
+| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; project, routing/ping/fault evidence and supplemental three-router captures included; running configurations pending |
 | [DHCP relay troubleshooting](dhcp-relay/) | Client address failure, relay placement, server pools, return path | Complete; final Packet Tracer file, configs, client tests, and failure/repair evidence |
-| [Spanning Tree](spanning-tree/) | Rapid PVST+, root election, PortFast, BPDU Guard | Planned lab; artifacts pending |
-| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | In progress; live mismatch and repair documented; final artifacts pending |
-| [Access control lists](acl/) | Standard/extended ACLs, placement, hit counters | Planned lab; artifacts pending |
+| [Spanning Tree](spanning-tree/) | 802.1D STP, root election, blocked ports, link failover | In progress; project and root/port-role/failover evidence included; configs pending |
+| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | In progress; project, mismatch repair, normal operation and failover screenshots included; configs pending |
+| [ACL rule-order troubleshooting](acl-troubleshooting/) | Extended ACL placement, rule order, permit/deny tests, hit counters | In progress; project, policy/configuration excerpt and failure/repair evidence included; full config export pending |
 | [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
 | [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
 | [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Planned lab; artifacts pending |
@@ -72,6 +72,10 @@ ccna-network-labs/
 ├── troubleshooting/
 └── templates/
 ```
+
+## Finish Existing Labs First
+
+Update remaining text configuration exports and verification checks before marking labs complete. [Additional three-router OSPF evidence](ospf/three-router-verification/) is available alongside the original OSPF troubleshooting case. The supplemental project's R1 interface mapping differs from the original write-up; use its own addressing table.
 
 ## Next Build
 
