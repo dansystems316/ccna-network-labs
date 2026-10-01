@@ -1,6 +1,6 @@
 # OSPF Single-Area Routing Lab
 
-> **Status:** In progress — the working Packet Tracer file, topology, OSPF neighbor and route evidence, end-to-end tests, and a subnet-mask fault case are included. Text running-configuration exports are still pending.
+> **Status:** Complete evidence set — Packet Tracer project, topology/addressing, three running-configuration exports, neighbor/route/ping evidence, and the subnet-mask failure/repair case are included. The uploaded configurations were reviewed against this write-up; the project was not independently simulated during the documentation update.
 
 ## Scenario
 
@@ -79,6 +79,18 @@ router ospf 1
  network 10.0.23.0 0.0.0.3 area 0
  network 192.168.30.0 0.0.0.255 area 0
 ```
+
+## Configuration Exports
+
+- [R1 running configuration](configs/R1-running-config.txt)
+- [R2 running configuration](configs/R2-running-config.txt)
+- [R3 running configuration](configs/R3-running-config.txt)
+
+These exports match this lab's addressing table, including R1 G0/0 as LAN-A and G0/1 as the link to R2. CLI prompts and command-error text were removed; device configuration commands were preserved.
+
+R1 also contains network statements for 192.168.20.0/24 and 192.168.30.0/24. Neither matches a local R1 interface in the export, so they are redundant. OSPF network statements select local interfaces; these statements do not independently originate remote LAN routes.
+
+[Supplemental three-router captures](three-router-verification/) use a different R1 interface mapping and are documented separately.
 
 ## Working-State Verification
 
