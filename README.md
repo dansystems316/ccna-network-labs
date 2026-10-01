@@ -2,7 +2,7 @@
 
 Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
 
-> **Current status:** DHCP relay includes the full evidence set. VLAN routing, OSPF, STP, EtherChannel, and ACL troubleshooting include Packet Tracer projects and verification evidence; remaining exports and checks are tracked in the lab index.
+> **Current status:** DHCP relay and the original OSPF lab include their full evidence sets. VLAN routing, OSPF, STP, EtherChannel, and ACL troubleshooting include Packet Tracer projects and verification evidence; remaining exports and checks are tracked in the lab index.
 
 ## What This Portfolio Demonstrates
 
@@ -26,7 +26,7 @@ Hands-on Cisco networking portfolio focused on configuration, verification, and 
 | Lab | Skills shown | Evidence status |
 |---|---|---|
 | [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
-| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | In progress; project, routing/ping/fault evidence and supplemental three-router captures included; running configurations pending |
+| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | Complete evidence set; project, three router configs, routing/ping evidence and mask-mismatch failure/repair case included |
 | [DHCP relay troubleshooting](dhcp-relay/) | Client address failure, relay placement, server pools, return path | Complete; final Packet Tracer file, configs, client tests, and failure/repair evidence |
 | [Spanning Tree](spanning-tree/) | 802.1D STP, root election, blocked ports, link failover | In progress; project and root/port-role/failover evidence included; configs pending |
 | [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | In progress; project, mismatch repair, normal operation and failover screenshots included; configs pending |
