@@ -1,86 +1,39 @@
-# CCNA Network Labs Portfolio
+# Dan Partain | Cisco Networking Portfolio
 
-Hands-on Cisco networking portfolio focused on configuration, verification, and structured troubleshooting for junior network and IT infrastructure roles.
+Hands-on Cisco Packet Tracer projects for entry-level IT support, network support, and NOC roles. These labs document device configuration, command-line verification, and troubleshooting with before-and-after evidence. CCNA preparation is in progress.
 
-> **Current status:** DHCP relay and the original OSPF lab include their full evidence sets. VLAN routing, OSPF, STP, EtherChannel, and ACL troubleshooting include Packet Tracer projects and verification evidence; remaining exports and checks are tracked in the lab index.
+## Start with these projects
 
-## What This Portfolio Demonstrates
-
-- Building segmented networks with VLANs, trunks, and inter-VLAN routing
-- Establishing and validating IPv4 and IPv6 connectivity
-- Configuring OSPF, EtherChannel, STP, ACLs, NAT/PAT, and Layer 2 security
-- Isolating DHCP address failures across routed VLANs
-- Using Cisco IOS evidence to prove expected behavior
-- Diagnosing faults from symptoms instead of making random configuration changes
-- Recording root cause, corrective action, and post-fix validation
-
-## Start Here
-
-- [Lab index and completion status](LAB_INDEX.md)
-- [Troubleshooting cases and workflow](troubleshooting/README.md)
-- [Evidence checklist](PORTFOLIO_CHECKLIST.md)
-- [Reusable lab template](templates/lab-template.md)
-
-## Featured Labs
-
-| Lab | Skills shown | Evidence status |
+| Project | What to inspect | Evidence status |
 |---|---|---|
-| [VLAN and inter-VLAN routing](vlan-intervlan-routing/) | VLANs, access ports, 802.1Q trunks, router-on-a-stick | In progress; Packet Tracer lab and troubleshooting evidence included |
-| [OSPF single area](ospf/) | Neighbors, route learning, router IDs, adjacency troubleshooting | Complete evidence set; project, three router configs, routing/ping evidence and mask-mismatch failure/repair case included |
-| [DHCP relay troubleshooting](dhcp-relay/) | Client address failure, relay placement, server pools, return path | Complete; final Packet Tracer file, configs, client tests, and failure/repair evidence |
-| [Spanning Tree](spanning-tree/) | 802.1D STP, root election, blocked ports, link failover | In progress; project and root/port-role/failover evidence included; configs pending |
-| [EtherChannel](etherchannel/) | LACP, port-channel trunks, consistency checks | In progress; project, mismatch repair, normal operation and failover screenshots included; configs pending |
-| [ACL rule-order troubleshooting](acl-troubleshooting/) | Extended ACL placement, rule order, permit/deny tests, hit counters | In progress; project, policy/configuration excerpt and failure/repair evidence included; full config export pending |
-| [NAT and PAT](nat-pat/) | Inside/outside roles, overload, translation checks | Planned lab; artifacts pending |
-| [DHCP Snooping and DAI](dhcp-snooping-dai/) | Trust boundaries, bindings, ARP inspection | Planned lab; artifacts pending |
-| [IPv6 routing](ipv6-routing/) | Addressing, neighbor discovery, static/default routes | Planned lab; artifacts pending |
+| [DHCP relay troubleshooting](dhcp-relay/README.md) | Isolate a failed lease to a missing VLAN 10 helper; use VLAN 20 as a working control | Complete evidence set; owner verified the saved project |
+| [OSPF adjacency troubleshooting](ospf/README.md) | Diagnose a subnet-mask mismatch; verify neighbors, learned routes, and end-to-end reachability | Complete evidence set; configs reviewed, no independent simulation during this review |
+| [ACL rule-order troubleshooting](acl-troubleshooting/README.md) | Show how an early permit bypasses a deny, then restore policy and inspect hit counts | Project and failure/repair evidence included; full router export pending |
 
-A lab will be marked **complete** only when it includes the topology, addressing plan, Packet Tracer file, configurations, verification output, and at least one documented troubleshooting case.
+## Additional hands-on labs
 
-## Troubleshooting Method
+| Project | Demonstrated work | Remaining evidence |
+|---|---|---|
+| [VLAN and inter-VLAN routing](vlan-intervlan-routing/README.md) | Access VLAN fault isolation, router-on-a-stick, gateway recovery | Full configs, final trunk forwarding and reconciled endpoint/ping evidence |
+| [STP failover](spanning-tree/README.md) | Root election, blocked backup path, forwarding after link failure | Three switch config exports and link-restoration capture |
+| [LACP failover](etherchannel/etherchannel-lacp/README.md) | Bundled links and connectivity with one member down | Two switch exports and labeled topology image |
+| [EtherChannel VLAN mismatch](etherchannel/README.md) | Suspended member caused by inconsistent allowed VLANs; repair evidence | This separate exercise's saved project and configs |
+| [DHCP snooping and DAI](dhcp-snooping-dai/README.md) | VLAN 10 snooping, two learned bindings, trust boundaries, DAI active | Invalid ARP rejection and rogue DHCP blocking remain unverified |
 
-1. Define the exact symptom and expected behavior.
-2. Test from the nearest point to the farthest point.
-3. Inspect Layer 1, Layer 2, Layer 3, routing, and policy in order.
-4. Record the command output that exposes the fault.
-5. Make one controlled change.
-6. Repeat the original test and capture proof of recovery.
+[Full lab index](LAB_INDEX.md) · [Troubleshooting cases](troubleshooting/README.md) · [Evidence checklist](PORTFOLIO_CHECKLIST.md) · [Remaining tasks](PORTFOLIO_NEXT_STEPS.md)
 
-## Tools
+## How I troubleshoot
 
-- Cisco Packet Tracer
-- Cisco IOS CLI
-- Wireshark
-- Linux networking tools
-- Git and GitHub
+Define the symptom and expected behavior, establish the affected scope, check interface and VLAN state, inspect addressing and routes, make one controlled change, and repeat the original test. Each documented result distinguishes observed behavior from tests still needed.
 
-## Repository Structure
+## Using the labs
 
-```text
-ccna-network-labs/
-├── LAB_INDEX.md
-├── PORTFOLIO_CHECKLIST.md
-├── vlan-intervlan-routing/
-├── ospf/
-├── dhcp-relay/
-├── spanning-tree/
-├── etherchannel/
-├── acl/
-├── nat-pat/
-├── dhcp-snooping-dai/
-├── ipv6-routing/
-├── troubleshooting/
-└── templates/
-```
+Open the linked README first for addressing, requirements, and evidence. Download its `.pkt` file and open it in Cisco Packet Tracer. Configuration exports are included where available; screenshots retain the observed device state. A complete evidence set is not a claim of independent execution by the documentation reviewer.
 
-## Finish Existing Labs First
+## Planned work
 
-Update remaining text configuration exports and verification checks before marking labs complete. [Additional three-router OSPF evidence](ospf/three-router-verification/) is available alongside the original OSPF troubleshooting case. The supplemental project's R1 interface mapping differs from the original write-up; use its own addressing table.
-
-## Next Build
-
-The highest-value next addition is a small-enterprise capstone combining VLAN segmentation, DHCP, inter-VLAN routing, OSPF, ACL policy, NAT/PAT, Layer 2 protections, device management, and monitoring. That project will show how the individual technologies work together in an operational network.
+[NAT/PAT](nat-pat/README.md) and [IPv6 routing](ipv6-routing/README.md) are outlines awaiting lab artifacts. They are not presented as demonstrated skills. Finish the existing evidence gaps before expanding the portfolio.
 
 ## About
 
-Built by Dan Partain as practical evidence of Cisco networking and troubleshooting skills while preparing for a junior network role.
+Built by Dan Partain while preparing for the CCNA and moving into IT. The portfolio focuses on practical troubleshooting, accurate documentation, and verification for support and networking work.

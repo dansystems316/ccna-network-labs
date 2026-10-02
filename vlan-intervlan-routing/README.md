@@ -1,6 +1,6 @@
 # VLAN and Inter-VLAN Routing Lab
 
-> **Status:** In progress — the working Packet Tracer file, topology, device-state evidence, and one fault/recovery case are included. Text configuration exports, trunk output, and a captured PC1-to-PC2 test are still needed for a complete evidence set.
+> **Status:** In progress — the working Packet Tracer file, topology, device-state evidence, and one fault/recovery case are included. Text configuration exports, a final forwarding-state trunk capture, and an identified inter-VLAN test are still needed for a complete evidence set.
 
 ## Scenario
 
@@ -97,6 +97,10 @@ show interfaces trunk
 show interfaces FastEthernet0/1 switchport
 show ip interface brief
 ```
+
+### Additional supplied verification
+
+[Trunk output](images/show%20int%20trunk.png) shows Gi0/1 trunking with VLANs 10 and 20 allowed/active, but the forwarding-state list is `none`; it is not final forwarding proof. [Supplied ping](images/pc%201%20ping%20pc%202.png) succeeds to 192.168.20.20, while this table lists PC2 as 192.168.20.10. The source IP is not visible. Reconcile endpoint addresses and recapture an identified inter-VLAN test.
 
 ## Troubleshooting Case: PC1 Cannot Reach Its Gateway
 

@@ -45,9 +45,12 @@ Use ping, traceroute, ARP/neighbor tables, and device state to identify the firs
 
 | Case | Lab | Symptom | Root cause | Evidence |
 |---|---|---|---|---|
-| Pending | VLAN | Host cannot reach its gateway | To be confirmed in a real lab | Before/after output pending |
-| Pending | OSPF | Neighbor table is empty | To be confirmed in a real lab | Before/after output pending |
+| [Documented](../vlan-intervlan-routing/README.md) | VLAN | PC1 cannot reach gateway | Fa0/1 assigned to VLAN 20 instead of 10 | Wrong-VLAN output, failed ping, repair and recovered gateway ping |
+| [Documented](../ospf/README.md) | OSPF | R2/R3 adjacency fails | R3 /29 mask mismatched R2 /30 | Mask, neighbor and route failure/repair captures |
 | [Complete](../dhcp-relay/evidence/fault-case.md) | DHCP relay | PC1 DHCP fails while PC2 still leases | G0/0.10 helper removed | Interface command, PC1/PC2 control, repair, recovered lease, and server pings |
+| [Documented](../acl-troubleshooting/README.md) | ACL | PC0 ping incorrectly permitted | Earlier permit precedes deny | Broken/restored ACL, ping results and counters |
+| [Documented](../etherchannel/README.md) | LACP | Member suspended | Allowed VLAN mismatch | Error, suspended member and restored bundle |
+| [Open investigation](../dhcp-snooping-dai/README.md) | DAI | Unbound static client ping succeeds | Unresolved | Active config, trust states, zero counters; enforcement unverified |
 | Pending | NAT/PAT | No translations appear | To be confirmed in a real lab | Before/after output pending |
 
 Replace each pending row with an actual case after reproducing and fixing the fault. Good candidates from hands-on practice include a wrong access VLAN, trunk allowed-VLAN omission, OSPF subnet-mask mismatch, EtherChannel inconsistency, ACL direction error, missing NAT inside/outside designation, or incorrect DHCP trust boundary.
