@@ -1,5 +1,7 @@
 # Access Control List Labs
 
+The implemented [ACL rule-order troubleshooting lab](../acl-troubleshooting/README.md) includes a Packet Tracer project and before/after policy evidence. This folder retains additional learning examples.
+
 ## Planned Skills
 
 - Standard IPv4 ACLs

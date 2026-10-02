@@ -1,0 +1,16 @@
+User-supplied CLI observations; no independent execution during packaging.
+
+Final DHCP binding table:
+00:D0:FF:30:B0:E5  192.168.10.21  86400  dhcp-snooping  10  FastEthernet0/2
+00:60:47:E4:E3:DD  192.168.10.22  86400  dhcp-snooping  10  FastEthernet0/1
+Total number of bindings: 2
+
+DHCP snooping: globally enabled, VLAN 10 configured, option 82 insertion disabled.
+Gi0/1 trusted; Fa0/1 and Fa0/2 untrusted.
+DAI: VLAN 10 Enabled / Active. Fa0/1 and Fa0/2 untrusted (15 pps, burst 1); Gi0/1 trusted.
+Reported DAI counters: Forwarded 0, Dropped 0, DHCP Drops 0, ACL Drops 0, DHCP Permits 0.
+
+Static test: client 192.168.10.99/24, gateway 192.168.10.1, interface identifier FE80::260:47FF:FEE4:E3DD.
+Binding table during test contained only 192.168.10.21 on Fa0/2.
+PC ping to 192.168.10.21: Sent 4, Received 4, Lost 0, TTL 128.
+Static test did not demonstrate DAI blocking. Client restored to DHCP .22.
